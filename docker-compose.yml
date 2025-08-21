@@ -1,0 +1,23 @@
+services:
+    sis-admin:
+        container_name: sis-admin
+        build:
+            context: .
+            dockerfile: Dockerfile
+        networks:
+            - srs_front_network
+        restart: always
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.srs-admin.rule=Host(`staff-asu.acadence.uz`)"
+            - "traefik.http.routers.srs-admin.entrypoints=websecure"
+            - "traefik.http.routers.srs-admin.tls=true"
+            - "traefik.http.routers.srs-admin-http.rule=Host(`staff-asu.acadence.uz`)"
+            - "traefik.http.routers.srs-admin-http.entrypoints=web"
+            - "traefik.http.routers.srs-admin-http.middlewares=srs-admin-https"
+            - "traefik.http.middlewares.srs-admin-https.redirectscheme.scheme=https"
+            - "traefik.http.services.srs-admin.loadbalancer.server.port=80"
+networks:
+    srs_front_network:
+        name: production_network
+        external: true

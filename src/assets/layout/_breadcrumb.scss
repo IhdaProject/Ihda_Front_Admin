@@ -1,0 +1,36 @@
+.layout-breadcrumb-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--surface-border);
+    padding: 1rem 1.5rem;
+    background-color: var(--surface-card);
+
+    .layout-breadcrumb {
+        ol {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            color: var(--text-color-secondary);
+
+            li {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+
+    .layout-breadcrumb-buttons {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        button {
+            flex-shrink: 0;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+.layout-menu-light {
+    --menu-bg: #ffffff;
+    --root-menuitem-text-color: var(--p-text-color);
+    --menuitem-text-color: var(--p-surface-700);
+    --menuitem-hover-bg: rgba(0, 0, 0, 0.04);
+    --menuitem-hover-border-color: var(--p-content-border-color);
+    --menuitem-hover-text-color: var(--p-surface-900);
+    --active-menuitem-text-color: var(--p-surface-900);
+    --active-menuitem-bg: var(--p-primary-50);
+    --inline-menu-border-color: var(--p-content-border-color);
+    --active-menuitem-border-color: color-mix(in srgb, var(--p-primary-100) 100%, transparent);
+}

@@ -1,0 +1,34 @@
+/* You can add global styles to this file, and also import other style files */
+@use './tailwind.css';
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+@use './assets/demo/demo.scss';
+
+.p-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+
+    >label {
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .p-error {
+        color: var(--p-inputtext-invalid-border-color);
+    }
+
+    input,
+    .p-select {
+        width: 100%;
+    }
+}
+
+formly-wrapper-primeng-form-field {
+    position: relative;
+
+    .p-field .p-error {
+        position: absolute;
+        bottom: -17px;
+    }
+}

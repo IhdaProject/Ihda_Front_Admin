@@ -1,0 +1,9 @@
+.layout-menu-dark {
+    --menu-bg: var(--p-surface-950);
+    --root-menuitem-text-color: rgba(255, 255, 255, 0.6);
+    --menuitem-text-color: rgba(255, 255, 255, 0.87);
+    --menuitem-hover-bg: hsla(0, 0%, 100%, 0.07);
+    --active-menuitem-text-color: rgba(255, 255, 255, 0.87);
+    --active-menuitem-bg: hsla(0, 0%, 100%, 0.04);
+    --inline-menu-border-color: hsla(0, 0%, 100%, 0.12);
+}

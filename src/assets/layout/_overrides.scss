@@ -1,0 +1,21 @@
+p-radio-button,
+p-radiobutton,
+p-radioButton {
+    display: inline-flex;
+}
+
+p-tree {
+    .p-tree-node-checkbox {
+        display: block;
+    }
+}
+
+p-treetable {
+    .p-treetable-node-checkbox {
+        display: block;
+    }
+}
+
+.p-tag-icon {
+    line-height: 1.2;
+}

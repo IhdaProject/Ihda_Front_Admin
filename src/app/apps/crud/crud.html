@@ -1,0 +1,252 @@
+<div class="card" #card>
+    <p-table
+        #dt
+        [value]="data()?.content ?? []"
+        [columns]="columns"
+        [paginator]="true"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [rowHover]="true"
+        dataKey="id"
+        [currentPageReportTemplate]="'currentPageReportTemplate' | transloco"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 20, 30]"
+        [scrollable]="true"
+        [filters]="filters()"
+        [lazy]="true"
+        [rows]="10"
+        [totalRecords]="data()?.total ?? 0"
+        (onLazyLoad)="loadData($event)"
+    >
+        <ng-template #caption>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    @if (enableBack) {
+                        <p-button
+                            icon="pi pi-angle-left"
+                            severity="secondary"
+                            [rounded]="true"
+                            (click)="back()"
+                        />
+                    }
+                    <h3 class="m-0 font-semibold text-xl">
+                        {{ title | transloco }}
+                    </h3>
+
+                    <ng-content select="[titleLeft]"></ng-content>
+                </div>
+                <section class="flex gap-2">
+                    <p-iconfield>
+                        <p-inputicon styleClass="pi pi-search" />
+                        <input
+                            pInputText
+                            type="text"
+                            [placeholder]="'search...' | transloco"
+                        />
+                        <!-- (input)="onGlobalFilter(dt, $event)" -->
+                    </p-iconfield>
+                    <p-button
+                        *hasPermission="addPermission"
+                        [label]="'add' | transloco"
+                        icon="pi pi-plus"
+                        severity="secondary"
+                        (onClick)="openNew()"
+                    />
+                </section>
+            </div>
+        </ng-template>
+        <ng-template #header let-columns>
+            <tr>
+                <!-- <th pFrozenColumn style="width: 3rem">
+                    <p-tableHeaderCheckbox />
+                </th> -->
+                @for (col of columns; track $index) {
+                    <th
+                        [pSortableColumn]="col.sortable ? col.field : undefined"
+                    >
+                        <span class="flex items-center gap-2"
+                            >{{ col.header || col.field | transloco }}
+                            @if (col.sortable) {
+                                <p-sortIcon [field]="col.field" />
+                            }
+                        </span>
+                    </th>
+                }
+                <th
+                    [style.width]="widthActions()"
+                    [style.min-width]="widthActions()"
+                    alignFrozen="right"
+                    pFrozenColumn
+                ></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-rowData let-columns="columns">
+            @if (!rowData.loading) {
+                <tr>
+                    <!-- <td pFrozenColumn>
+                        <p-tableCheckbox [value]="rowData" />
+                    </td> -->
+                    @for (col of columns; track $index) {
+                        <td
+                            [class.text-primary]="col.primary"
+                            (click)="
+                                enableRowClick()
+                                    ? clickedRow.emit(rowData)
+                                    : null
+                            "
+                        >
+                            @switch (col.type) {
+                                @case ('image') {
+                                    @if (
+                                        col.field | getDeepValue: rowData;
+                                        as fileKey
+                                    ) {
+                                        @if (
+                                            fileKey | appFileDownload | async;
+                                            as imgSrc
+                                        ) {
+                                            <img
+                                                [src]="imgSrc"
+                                                [alt]="rowData[col.field]"
+                                                style="width: 100px"
+                                                class="rounded"
+                                            />
+                                        }
+                                    }
+                                }
+                                @case ('price') {
+                                    {{ rowData[col.field] | currency }}
+                                }
+                                @case ('date') {
+                                    <span class="text-blue-500">
+                                        {{
+                                            rowData[col.field]
+                                                | date: 'yyyy-MM-dd'
+                                        }}
+                                    </span>
+                                }
+                                @case ('time') {
+                                    <span class="text-blue-500">
+                                        {{ rowData[col.field] | date: 'HH:mm' }}
+                                    </span>
+                                }
+                                @case ('yesNo') {
+                                    @if (rowData[col.field]) {
+                                        <span class="text-green-500">
+                                            {{ 'yes' | transloco }}
+                                        </span>
+                                    } @else {
+                                        <span class="text-red-500">
+                                            {{ 'no' | transloco }}
+                                        </span>
+                                    }
+                                }
+                                @case ('translate') {
+                                    {{
+                                        col.field
+                                            | getDeepValue: rowData
+                                            | transloco
+                                    }}
+                                }
+                                @case ('switcher') {
+                                    <p-toggleswitch
+                                        [(ngModel)]="rowData[col.field]"
+                                        (ngModelChange)="update(rowData)"
+                                    />
+                                }
+                                @default {
+                                    {{ col.field | getDeepValue: rowData }}
+                                }
+                            }
+                        </td>
+                    }
+                    <td alignFrozen="right" pFrozenColumn>
+                        @if (extraBtnsTemplate(); as extraBtnsTemplate) {
+                            <ng-container
+                                *hasPermission="viewPermission"
+                                [ngTemplateOutlet]="extraBtnsTemplate"
+                                [ngTemplateOutletContext]="{
+                                    $implicit: rowData
+                                }"
+                            >
+                            </ng-container>
+                        }
+                        <p-button
+                            *hasPermission="editPermission"
+                            icon="pi pi-pencil"
+                            class="mr-2"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="edit(rowData)"
+                        />
+                        <p-button
+                            *hasPermission="deletePermission"
+                            icon="pi pi-trash"
+                            severity="danger"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="delete(rowData)"
+                        />
+                    </td>
+                </tr>
+            } @else {
+                <tr>
+                    @for (col of columns; track col.field) {
+                        <td>
+                            <p-skeleton height="20px" />
+                        </td>
+                    }
+                    <td>
+                        <p-skeleton height="20px" />
+                    </td>
+                </tr>
+            }
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td [attr.colspan]="columns.length">
+                    <div
+                        class="text-center"
+                        style="margin: 150px 0"
+                        [style.width]="card.clientWidth - 40 + 'px'"
+                    >
+                        <i class="pi pi-inbox" style="font-size: 50px"></i>
+                        <p>{{ 'no.data' | transloco }}</p>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog
+    [(visible)]="visibleDialog"
+    [style]="{ minWidth: '450px', width: '30%' }"
+    [header]="(isEditing ? 'edit' : 'create') | transloco"
+    [modal]="true"
+>
+    <ng-template #content>
+        <form [formGroup]="form">
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+                [model]="model"
+            ></formly-form>
+        </form>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button
+            [label]="'cancel' | transloco"
+            icon="pi pi-times"
+            text
+            (click)="hideDialog()"
+        />
+        <p-button
+            [label]="'save' | transloco"
+            icon="pi pi-check"
+            (click)="submit()"
+            [loading]="form.disabled"
+            [disabled]="form.disabled"
+        />
+    </ng-template>
+</p-dialog>

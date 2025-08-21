@@ -1,0 +1,11 @@
+.card {
+    background-color: var(--surface-card);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}

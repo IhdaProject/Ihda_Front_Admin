@@ -43,7 +43,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
 import { GridResponse } from './types/base.model';
 import { GetDeepValuePipe } from './pipes/getDeepValue.pipe';
-import { catchError, throwError } from 'rxjs';
+import { catchError, finalize, map, take, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FileDownloadPipe } from 'src/shared/pipes/file-download.pipe';
 import { HasPermissionDirective } from 'src/shared/directives/has-permission.directive';
@@ -142,13 +142,18 @@ export default class Crud<T> {
 
     visibleDialog = false;
     form = new FormGroup({});
+    loadingData = false;
 
     data = signal<GeneralModel<T[]> | null>(null);
 
     loadData(e: TableLazyLoadEvent) {
-        this.$data.getAll<GeneralModel<T[]>>(e).subscribe((w) => {
-            this.data.set(w);
-        });
+        this.loadingData = true;
+        this.$data.getAll<GeneralModel<T[]>>(e)
+        .pipe(
+            map((w) => {this.data.set(w)}),
+            finalize(() => this.loadingData = false),
+            take(1)
+        ).subscribe();
     }
 
     submit(model = this.model) {

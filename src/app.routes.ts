@@ -25,12 +25,12 @@ export const appRoutes: Routes = [
                 data: { breadcrumb: 'Administration' }
             },
             {
-                path: 'student-management',
+                path: 'informations',
                 loadChildren: () =>
                     import(
-                        '@/apps/student-management/student-management.routes'
+                        '@/apps/information-management/information-management.routes'
                     ),
-                data: { breadcrumb: 'Student Management' }
+                data: { breadcrumb: 'informations' }
             }
         ]
     },

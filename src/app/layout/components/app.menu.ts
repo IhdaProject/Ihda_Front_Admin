@@ -32,6 +32,7 @@ export class AppMenu {
             permession: [10110001],
             items: [
                 {
+                    permession: [10110001],
                     label: 'users',
                     icon: 'pi pi-fw pi-users',
                     routerLink: ['/administration/user']
@@ -40,17 +41,20 @@ export class AppMenu {
         },
         {
             label: 'Settings',
+            permession: [10110001, 10110003],
             icon: 'pi pi-fw pi-briefcase',
             items: [
                 {
-                    label: 'types',
-                    icon: 'pi pi-fw pi-tag',
+                    permession: [10110001],
+                    label: 'permissions',
+                    icon: 'pi pi-key',
                     routerLink: ['/settings/types']
                 },
                 {
-                    label: 'group.settings',
-                    icon: 'pi pi-fw pi-cog',
-                    routerLink: ['/settings/group-settings']
+                    permession: [10110003],
+                    label: 'structures',
+                    icon: 'pi pi-lock',
+                    routerLink: ['/settings/structures']
                 }
             ]
         },
@@ -105,12 +109,26 @@ export class AppMenu {
             ]
         },
         {
-            label: 'Student Management',
+            label: 'Informations',
+            permession: [30100001,30120001,30110001],
             items: [
                 {
-                    label: 'students',
-                    icon: 'pi pi-headphones',
-                    routerLink: ['/student-management/students']
+                    label: 'country',
+                    permession: [30100001],
+                    icon: 'pi pi-flag',
+                    routerLink: ['/informations/country']
+                },
+                {
+                    label: 'region',
+                    permession: [30120001],
+                    icon: 'pi pi-map-marker',
+                    routerLink: ['/informations/region']
+                },
+                {
+                    label: 'district',
+                    permession: [30110001],
+                    icon: 'pi pi-map-marker',
+                    routerLink: ['/informations/district']
                 }
             ]
         }

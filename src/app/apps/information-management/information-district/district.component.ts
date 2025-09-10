@@ -8,24 +8,21 @@ import {
 import { TranslocoModule } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { StudentsService } from './service/students.service';
 import { SkeletonModule } from 'primeng/skeleton';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
-import { Stage } from 'src/core/enums/stage.enum';
+import { DistrictService } from './service/district.service';
 
 // TODO: MAKE BASE GRID COMPONENT IF REALYY NEEDED
 @Component({
-    selector: 'app-students',
+    selector: 'app-district',
     imports: [
         TableModule,
         ButtonModule,
         TranslocoModule,
         SkeletonModule,
-        SelectButtonModule,
         FormsModule
     ],
-    providers: [StudentsService],
+    providers: [DistrictService],
     template: `
         <div class="card" #card>
             <p-table
@@ -50,27 +47,13 @@ import { Stage } from 'src/core/enums/stage.enum';
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <h3 class="m-0 font-semibold text-xl">
-                                {{ 'students' | transloco }}
+                                {{ 'district' | transloco }}
                             </h3>
                         </div>
                         <div>
                             <!-- RIGHT -->
                         </div>
                     </div>
-
-                    <p-selectbutton
-                        [options]="stateOptions"
-                        [(ngModel)]="stage"
-                        optionLabel="label"
-                        optionValue="value"
-                        aria-labelledby="basic"
-                        class="mt-4"
-                        (ngModelChange)="dt.filter($event, 'stage', 'contains')"
-                    >
-                        <ng-template #item let-item>
-                            {{ item.label | transloco }}
-                        </ng-template>
-                    </p-selectbutton>
                 </ng-template>
 
                 <ng-template #header>
@@ -161,11 +144,11 @@ import { Stage } from 'src/core/enums/stage.enum';
             </p-table>
         </div>
     `,
-    styleUrl: './students.component.css',
+    styleUrl: './district.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class StudentsComponent {
-    private $data = inject(StudentsService);
+export default class DistrictComponent {
+    private $data = inject(DistrictService);
     data = signal<GridResponse>({
         content: Array.from({ length: 10 }).map(
             (_, i) => ({ loading: true }) as any
@@ -178,15 +161,8 @@ export default class StudentsComponent {
         }
     });
 
-    stateOptions: any[] = [
-        { label: 'unassigned', value: Stage.UNASSIGNED },
-        { label: 'assigned', value: Stage.ENROLLED }
-    ];
-
-    stage: Stage = Stage.UNASSIGNED;
-
     loadData(e: TableLazyLoadEvent) {
-        this.$data.getAll(e, this.stage).subscribe((w) => {
+        this.$data.getAll(e).subscribe((w) => {
             this.data.set(w);
         });
     }

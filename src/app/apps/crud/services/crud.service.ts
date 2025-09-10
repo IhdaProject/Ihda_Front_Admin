@@ -5,8 +5,6 @@ import { BaseService } from 'src/core/services/base.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { HttpParams } from '@angular/common/http';
-import { GridResponse } from '../types/base.model';
-import { GeneralModel } from 'src/shared/types/general-model';
 
 @Injectable()
 export abstract class CrudService {

@@ -56,9 +56,6 @@
         </ng-template>
         <ng-template #header let-columns>
             <tr>
-                <!-- <th pFrozenColumn style="width: 3rem">
-                    <p-tableHeaderCheckbox />
-                </th> -->
                 @for (col of columns; track $index) {
                     <th
                         [pSortableColumn]="col.sortable ? col.field : undefined"
@@ -80,11 +77,8 @@
             </tr>
         </ng-template>
         <ng-template #body let-rowData let-columns="columns">
-            @if (!rowData.loading) {
+            @if (!loadingData) {
                 <tr>
-                    <!-- <td pFrozenColumn>
-                        <p-tableCheckbox [value]="rowData" />
-                    </td> -->
                     @for (col of columns; track $index) {
                         <td
                             [class.text-primary]="col.primary"
@@ -202,18 +196,33 @@
             }
         </ng-template>
         <ng-template #emptymessage>
-            <tr>
-                <td [attr.colspan]="columns.length">
-                    <div
-                        class="text-center"
-                        style="margin: 150px 0"
-                        [style.width]="card.clientWidth - 40 + 'px'"
-                    >
-                        <i class="pi pi-inbox" style="font-size: 50px"></i>
-                        <p>{{ 'no.data' | transloco }}</p>
-                    </div>
-                </td>
-            </tr>
+            @if (!loadingData) {
+                <tr>
+                    <td [attr.colspan]="columns.length">
+                        <div
+                            class="text-center"
+                            style="margin: 150px 0"
+                            [style.width]="card.clientWidth - 40 + 'px'"
+                        >
+                            <i class="pi pi-inbox" style="font-size: 50px"></i>
+                            <p>{{ 'no.data' | transloco }}</p>
+                        </div>
+                    </td>
+                </tr>
+            } @else {
+                @for (row of [].constructor(dt.rows); track $index) {
+                    <tr>
+                        @for (col of columns; track col.field) {
+                            <td>
+                                <p-skeleton height="20px" />
+                            </td>
+                        }
+                        <td>
+                            <p-skeleton height="20px" />
+                        </td>
+                    </tr>
+                }
+            }
         </ng-template>
     </p-table>
 </div>

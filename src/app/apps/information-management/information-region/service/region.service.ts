@@ -2,22 +2,21 @@ import { GridResponse } from '@/apps/crud/types/base.model';
 import { HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Stage } from 'src/core/enums/stage.enum';
 import { BaseService } from 'src/core/services/base.service';
 
 @Injectable()
-export class StudentsService {
-    readonly url = 'management/students';
+export class RegionService {
+    readonly url = 'api-rb/region/getall';
 
     private $base = inject(BaseService);
 
-    getAll(tableLazyLoadEvent: TableLazyLoadEvent, stage: Stage) {
+    getAll(tableLazyLoadEvent: TableLazyLoadEvent) {
         let params = new HttpParams()
             .append(
-                'page',
-                `${(tableLazyLoadEvent.first || 0) / (tableLazyLoadEvent.rows || 1)}`
+                'skip',
+                `${tableLazyLoadEvent.first}`
             )
-            .append('size', `${tableLazyLoadEvent.rows}`);
+            .append('take', `${tableLazyLoadEvent.rows}`);
 
         const sortField = tableLazyLoadEvent.sortField;
         if (sortField) {
@@ -38,7 +37,7 @@ export class StudentsService {
             });
         }
         return this.$base.get<GridResponse>(
-            `${this.url}/${stage === Stage.UNASSIGNED ? 'unassigned' : 'assigned'}`,
+            `${this.url}`,
             { params }
         );
     }

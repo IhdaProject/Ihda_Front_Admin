@@ -26,6 +26,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CommonModule } from '@angular/common';
 import { RippleModule } from 'primeng/ripple';
 import { TranslocoModule } from '@jsverse/transloco';
+import { HasPermissionDirective } from 'src/shared/directives/has-permission.directive';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -35,7 +36,8 @@ import { TranslocoModule } from '@jsverse/transloco';
         RouterModule,
         RippleModule,
         TooltipModule,
-        TranslocoModule
+        TranslocoModule,
+        HasPermissionDirective
     ],
     template: `
         <ng-container>
@@ -121,6 +123,7 @@ import { TranslocoModule } from '@jsverse/transloco';
                 >
                     <li
                         app-menuitem
+                        *hasPermission="child.permession"
                         [item]="child"
                         [index]="i"
                         [parentKey]="key"

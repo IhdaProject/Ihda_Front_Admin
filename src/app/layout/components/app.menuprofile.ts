@@ -5,8 +5,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { map, Subscription, takeUntil } from 'rxjs';
 import { AuthService } from 'src/core/services/auth.service';
+import { AccountService } from 'src/shared/services/account.service';
+import { Account } from 'src/shared/types/account';
+import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
 
 @Component({
     selector: '[app-menu-profile]',
@@ -15,29 +18,17 @@ import { AuthService } from 'src/core/services/auth.service';
     template: `<button (click)="toggleMenu()" pTooltip="Profile" [tooltipDisabled]="isTooltipDisabled()">
             <img src="/demo/images/avatar/amyelsner.png" alt="avatar" style="width: 32px; height: 32px;" />
             <span class="text-start">
-                <strong>Amy Elsner</strong>
+                <strong>{{ account?.fullName }}</strong>
                 <small>Webmaster</small>
             </span>
             <i class="layout-menu-profile-toggler pi pi-fw" [ngClass]="{ 'pi-angle-down': menuProfilePosition() === 'start' || isHorizontal(), 'pi-angle-up': menuProfilePosition() === 'end' && !isHorizontal() }"></i>
         </button>
 
         <ul *ngIf="menuProfileActive()" [@menu]="isHorizontal() ? 'overlay' : 'inline'">
-            <li pTooltip="Settings" [tooltipDisabled]="isTooltipDisabled()" [routerLink]="['/profile/create']">
-                <button [routerLink]="['/documentation']">
-                    <i class="pi pi-cog pi-fw"></i>
-                    <span>Settings</span>
-                </button>
-            </li>
             <li pTooltip="Profile" [tooltipDisabled]="isTooltipDisabled()">
                 <button [routerLink]="['/documentation']">
                     <i class="pi pi-file-o pi-fw"></i>
                     <span>Profile</span>
-                </button>
-            </li>
-            <li pTooltip="Support" [tooltipDisabled]="isTooltipDisabled()">
-                <button [routerLink]="['/documentation']">
-                    <i class="pi pi-compass pi-fw"></i>
-                    <span>Support</span>
                 </button>
             </li>
             <li pTooltip="Logout" >
@@ -62,6 +53,7 @@ import { AuthService } from 'src/core/services/auth.service';
 export class AppMenuProfile implements OnDestroy {
     layoutService = inject(LayoutService);
     authService = inject(AuthService);
+    accountService = inject(AccountService);
 
     renderer = inject(Renderer2);
 
@@ -79,6 +71,8 @@ export class AppMenuProfile implements OnDestroy {
 
     outsideClickListener: any;
 
+    account: Account | null = null;
+
     constructor() {
         this.subscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (this.isHorizontal() && this.menuProfileActive()) {
@@ -95,8 +89,15 @@ export class AppMenuProfile implements OnDestroy {
                 this.unbindOutsideClickListener();
             }
         });
+
+        this.subscription = this.accountService.currentUser
+        .pipe(
+            map(account => {this.account = account})
+        )
+        .subscribe();
     }
 
+    @Confirmable()
     logout() {
         this.authService.logout()
             .subscribe();

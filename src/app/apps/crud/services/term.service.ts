@@ -11,7 +11,10 @@ import { SettingsService } from 'src/shared/services/settings.service';
 
 @Injectable()
 export class TermService extends CrudService {
-    override url = 'academic/terms';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/terms';
     override title: string = 'terms';
     override columns: TableColumn[] = [
         {

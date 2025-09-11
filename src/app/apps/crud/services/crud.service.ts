@@ -13,7 +13,10 @@ export abstract class CrudService {
     abstract fields: FormlyFieldConfig[];
     model: any = {};
 
-    abstract url: string;
+    abstract urlGetAll: string;
+    abstract urlCreate: string;
+    abstract urlUpdate: string;
+    abstract urlDelete: string;
 
     protected $base = inject(BaseService);
 
@@ -42,16 +45,16 @@ export abstract class CrudService {
                     if (v.value) params = params.append(k, v.value);
             });
         }
-        return this.$base.get<T>(this.url, { params });
+        return this.$base.get<T>(this.urlGetAll, { params });
     }
 
     create<T>(model: any): Observable<T> {
-        return this.$base.post<T>(this.url, model);
+        return this.$base.post<T>(this.urlCreate, model);
     }
-    update<T>(id: string, model: any): Observable<T> {
-        return this.$base.put<T>(this.url, id, model);
+    update<T>(id: string | undefined, model: any): Observable<T> {
+        return this.$base.put<T>(this.urlUpdate, id, model);
     }
     delete<T>(id: number): Observable<T> {
-        return this.$base.delete<T>(this.url, id);
+        return this.$base.delete<T>(this.urlDelete, id);
     }
 }

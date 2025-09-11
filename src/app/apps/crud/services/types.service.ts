@@ -8,9 +8,12 @@ import { types } from 'src/core/enums/types.enum';
 
 @Injectable()
 export class TypesService extends CrudService {
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'api-auth/role/UpdatePermissionName';
+    override urlDelete = 'api-auth/role/UpdatePermissionName';
     private route = inject(ActivatedRoute);
 
-    override url = 'api-auth/role/getPermissions';
+    override urlGetAll = 'api-auth/role/getPermissions';
     override title: string = 'types';
     override columns: TableColumn[] = [
         {
@@ -41,6 +44,6 @@ export class TypesService extends CrudService {
 
     override update(id: string, model: any): Observable<any> {
         model.typeCode = this.route.snapshot.queryParams['typeCode'];
-        return super.update(id, model);
+        return super.update(undefined, model);
     }
 }

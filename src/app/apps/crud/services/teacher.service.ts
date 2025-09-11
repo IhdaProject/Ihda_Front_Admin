@@ -15,7 +15,10 @@ import { StorageCategory } from 'src/core/services/file-storage.service';
 
 @Injectable()
 export class TeacherService extends CrudService {
-    override url = 'academic/teachers';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/teachers';
     override title: string = 'teachers';
     override columns: TableColumn[] = [
         {

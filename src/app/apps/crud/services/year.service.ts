@@ -10,7 +10,10 @@ import { GridResponse } from '../types/base.model';
 
 @Injectable()
 export class YearService extends CrudService {
-    override url = 'academic/years';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/years';
     override title: string = 'years';
     override columns: TableColumn[] = [
         {

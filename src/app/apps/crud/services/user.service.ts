@@ -5,7 +5,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Injectable()
 export class UserService extends CrudService {
-    override url = 'api-auth/user/getusers';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'api-auth/user/getusers';
     override title: string = 'users';
     override columns: TableColumn[] = [
         {

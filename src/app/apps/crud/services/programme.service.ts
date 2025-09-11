@@ -11,7 +11,10 @@ import { Types } from 'src/core/enums/types.enum';
 
 @Injectable()
 export class ProgrammeService extends CrudService {
-    override url = 'academic/programmes';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/programmes';
     override title: string = 'programmes';
     override columns: TableColumn[] = [
         {

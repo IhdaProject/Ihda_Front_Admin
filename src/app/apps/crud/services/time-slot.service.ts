@@ -11,7 +11,10 @@ import { shifts } from 'src/core/enums/shift.enum';
 
 @Injectable()
 export class TimeSlotService extends CrudService {
-    override url = 'schedule/time-slots';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'schedule/time-slots';
     override title: string = 'timeSlots';
     override columns: TableColumn[] = [
         {

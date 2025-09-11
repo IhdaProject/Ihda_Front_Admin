@@ -11,6 +11,9 @@ import { fullName } from 'src/core/utils/util';
 
 @Injectable()
 export class CourseService extends CrudService {
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
     private router = inject(Router);
 
     get curriculum() {
@@ -18,7 +21,7 @@ export class CourseService extends CrudService {
         return urls[urls.length - 1];
     }
 
-    override url = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/curriculums/courses';
     override title: string = 'courses';
     override columns: TableColumn[] = [
         {

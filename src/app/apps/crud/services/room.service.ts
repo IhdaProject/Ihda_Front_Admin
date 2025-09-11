@@ -9,7 +9,10 @@ import { GridResponse } from '../types/base.model';
 
 @Injectable()
 export class RoomService extends CrudService {
-    override url = 'academic/rooms';
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'academic/curriculums/courses';
+    override urlDelete = 'academic/curriculums/courses';
+    override urlGetAll = 'academic/rooms';
     override title: string = 'rooms';
     override columns: TableColumn[] = [
         {

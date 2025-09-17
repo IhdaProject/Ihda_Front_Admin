@@ -113,10 +113,10 @@ export class AppMenu {
             permession: [30100001,30120001,30110001],
             items: [
                 {
-                    label: 'country',
+                    label: 'countries',
                     permession: [30100001],
                     icon: 'pi pi-flag',
-                    routerLink: ['/informations/country']
+                    routerLink: ['/informations/countries']
                 },
                 {
                     label: 'region',

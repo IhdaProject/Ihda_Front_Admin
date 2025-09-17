@@ -1,11 +1,19 @@
 import { Routes } from '@angular/router';
+import { CountriesService } from '../crud/services/countries.service';
+import { CrudService } from '../crud/services/crud.service';
 
 export default [
-    { path: '', pathMatch: 'full', redirectTo: 'informations/country' },
+    { path: '', pathMatch: 'full', redirectTo: 'informations/countries' },
     {
-        path: 'country',
-        loadComponent: () => import('./information-country/country.component'),
-        data: { breadcrumb: 'country' }
+        path: 'countries',
+        loadComponent: () => import('./information-countries/countries.component'),
+        data: { breadcrumb: 'countries' },
+        providers: [
+            {
+                provide: CrudService,
+                useClass: CountriesService
+            }
+        ]
     },
     {
         path: 'region',

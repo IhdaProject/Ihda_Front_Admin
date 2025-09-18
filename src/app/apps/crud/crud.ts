@@ -33,7 +33,6 @@ import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
-import { ProductService } from '@/pages/service/product.service';
 import { CrudService } from './services/crud.service';
 import { TranslocoModule } from '@jsverse/transloco';
 import { FormlyForm } from '@ngx-formly/core';
@@ -93,7 +92,6 @@ interface ExportColumn {
         HasPermissionDirective
     ],
     templateUrl: './crud.html',
-    providers: [ProductService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Crud<T> {

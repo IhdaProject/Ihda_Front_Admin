@@ -29,7 +29,7 @@ import { FileDownloadPipe } from 'src/shared/pipes/file-download.pipe';
             (change)="handleFileInput($event)"
         />
         <div class="flex gap-4 items-center">
-            @if (formControl?.value; as fileKey) {
+            @if (formControl && formControl.value; as fileKey) {
                 @if (fileKey | appFileDownload | async; as imgSrc) {
                     <img [src]="imgSrc" width="100px" alt="" />
                 }

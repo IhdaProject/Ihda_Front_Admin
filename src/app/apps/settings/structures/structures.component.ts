@@ -17,7 +17,6 @@ import Crud from '@/apps/crud/crud';
         <app-crud
             [extraBtnsTemplate]="extraBtns"
             [widthActions]="'150px'"
-            [filters]="typeCode()"
             [editPermission]="[10110006]"
             [addPermission]="[10110005]"
             [deletePermission]="[10110009]"
@@ -62,21 +61,8 @@ export default class StructuresComponent {
     private route = inject(ActivatedRoute);
     private location = inject(Location);
 
-    typeCode = signal<any>({
-        typeCode: { value: this.route.snapshot.queryParams['typeCode'] }
-    });
     parentTypeName = signal<string | undefined>(undefined);
     crud = viewChild<Crud<any>>('crud');
-
-    constructor() {
-        this.route.queryParams.subscribe((params) => {
-            this.parentTypeName.set(params['parentTypeName']);
-            const crud = this.crud();
-            if (crud) {
-                crud.dt().filter(params['typeCode'], 'typeCode', '');
-            }
-        });
-    }
 
     back() {
         this.location.back();

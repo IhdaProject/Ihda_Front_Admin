@@ -48,7 +48,7 @@ export class AppMenu {
                     permession: [10110001],
                     label: 'permissions',
                     icon: 'pi pi-key',
-                    routerLink: ['/settings/types']
+                    routerLink: ['/settings/permissions']
                 },
                 {
                     permession: [10110003],

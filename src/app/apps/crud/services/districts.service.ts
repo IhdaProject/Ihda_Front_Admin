@@ -57,5 +57,14 @@ export class DistrictsService extends CrudService {
                 required: true
             }
         },
+        {
+            key: 'regionName',
+            type: 'input',
+            props: {
+                label: 'regionName',
+                placeholder: 'regionName',
+                required: true
+            }
+        },
     ];
 }

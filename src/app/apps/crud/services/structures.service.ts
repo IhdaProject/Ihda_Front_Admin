@@ -40,32 +40,16 @@ export class StructuresService extends CrudService {
         },
         {
             key: 'permissionIds',
-            type: 'select', // 🔑 Formly ng-select type
+            type: 'select',
             props: {
                 label: 'Permissions',
                 placeholder: 'Select permissions',
                 multiple: true,
                 virtualScroll: true,
-                options: this.permissionsService.all$(), // async observable
+                options: [],
                 bindLabel: 'name',
                 bindValue: 'id'
-            },
-            hooks: {
-                onInit: () => {
-                    this.permissionsService.loadMore().subscribe();
-                }
-            },
-            templateOptions: {
-                // 🔑 ng-select specific event
-                onScrollToEnd: () => {
-                    this.permissionsService.loadMore().subscribe();
-                }
             }
         }
     ];
-
-    override update(id: string, model: any): Observable<any> {
-        model.typeCode = this.route.snapshot.queryParams['typeCode'];
-        return super.update(id, model);
-    }
 }

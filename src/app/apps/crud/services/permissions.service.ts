@@ -1,38 +1,43 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
-import { BaseService } from 'src/core/services/base.service';
+import { inject, Injectable } from '@angular/core';
+import { CrudService } from './crud.service';
+import { TableColumn } from '../types/table';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
-export class PermissionsService {
-  private permissions$ = new BehaviorSubject<any[]>([]);
-  private loadedAll = false;
-  private page = 0;
-  private readonly pageSize = 50;
+@Injectable()
+export class PermissionsService extends CrudService {
+    override urlCreate = 'academic/curriculums/courses';
+    override urlUpdate = 'api-auth/role/UpdatePermissionName';
+    override urlDelete = 'api-auth/role/UpdatePermission';
+    private route = inject(ActivatedRoute);
 
-  constructor(private base: BaseService) {}
-
-  loadMore(): Observable<any[]> {
-    if (this.loadedAll) {
-      return of(this.permissions$.value);
-    }
-
-    const params = new HttpParams()
-      .append('skip', `${this.page * this.pageSize}`)
-      .append('take', `${this.pageSize}`);
-
-    return this.base.get<any[]>('api-auth/role/getpermissions', { params }).pipe(
-      tap((res) => {
-        if (!res || res.length < this.pageSize) {
-          this.loadedAll = true;
+    override urlGetAll = 'api-auth/role/getPermissions';
+    override title: string = 'types';
+    override columns: TableColumn[] = [
+        {
+            field: 'id'
+        },
+        {
+            field: 'name',
+            sortable: true,
+            primary: true
+        },
+        {
+            field: 'code'
         }
-        this.page++;
-        this.permissions$.next([...this.permissions$.value, ...res]);
-      })
-    );
-  }
+    ];
 
-  all$(): Observable<any[]> {
-    return this.permissions$.asObservable();
-  }
+    override fields: FormlyFieldConfig[] = [
+        {
+            key: 'name',
+            type: 'input',
+            props: {
+                translate: true,
+                label: 'name',
+                placeholder: 'name',
+                required: true
+            }
+        },
+    ];
 }

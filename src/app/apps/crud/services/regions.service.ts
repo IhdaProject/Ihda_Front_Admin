@@ -57,5 +57,14 @@ export class RegionsService extends CrudService {
                 required: true
             }
         },
+        {
+            key: 'countryName',
+            type: 'input',
+            props: {
+                label: 'countryName',
+                placeholder: 'countryIdName',
+                required: true
+            }
+        },
     ];
 }

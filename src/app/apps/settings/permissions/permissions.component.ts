@@ -11,13 +11,12 @@ import { Location } from '@angular/common';
 import Crud from '@/apps/crud/crud';
 
 @Component({
-    selector: 'app-types',
+    selector: 'app-permissions',
     imports: [Crud, Button, RouterLink],
     template: `
         <app-crud
             [extraBtnsTemplate]="extraBtns"
             [widthActions]="'150px'"
-            [filters]="typeCode()"
             [editPermission]="[10110002]"
             #crud
         >
@@ -52,28 +51,15 @@ import Crud from '@/apps/crud/crud';
             />
         </ng-template>
     `,
-    styleUrl: './types.component.css',
+    styleUrl: './permissions.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class TypesComponent {
+export default class PermissionsComponent {
     private route = inject(ActivatedRoute);
     private location = inject(Location);
 
-    typeCode = signal<any>({
-        typeCode: { value: this.route.snapshot.queryParams['typeCode'] }
-    });
     parentTypeName = signal<string | undefined>(undefined);
     crud = viewChild<Crud<any>>('crud');
-
-    constructor() {
-        this.route.queryParams.subscribe((params) => {
-            this.parentTypeName.set(params['parentTypeName']);
-            const crud = this.crud();
-            if (crud) {
-                crud.dt().filter(params['typeCode'], 'typeCode', '');
-            }
-        });
-    }
 
     back() {
         this.location.back();

@@ -134,7 +134,7 @@ export class AppMenu {
         },
         {
             label: 'quran-course',
-            permession: [60100002,60100005],
+            permession: [60100002,60100005,60200001],
             items: [
                 {
                     label: 'training-centers',
@@ -147,6 +147,12 @@ export class AppMenu {
                     permession: [60100005],
                     icon: 'pi pi-receipt',
                     routerLink: ['/quran-course/course-forms']
+                },
+                {
+                    label: 'course-applications',
+                    permession: [60200001],
+                    icon: 'pi pi-file-edit',
+                    routerLink: ['/quran-course/course-applications']
                 }
             ]
         }

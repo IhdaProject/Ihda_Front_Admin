@@ -1,15 +1,12 @@
-import { PermissionsService } from './permissions.service';
 import { inject, Injectable } from '@angular/core';
 import { CrudService } from './crud.service';
 import { TableColumn } from '../types/table';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class StructuresService extends CrudService {
     private route = inject(ActivatedRoute);
-    private permissionsService = inject(PermissionsService);
 
     override urlGetAll = 'api-auth/role/getallstructures';
     override urlCreate = 'api-auth/role/CreateStructure';

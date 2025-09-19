@@ -131,6 +131,24 @@ export class AppMenu {
                     routerLink: ['/informations/district']
                 }
             ]
+        },
+        {
+            label: 'quran-course',
+            permession: [60100002,60100005],
+            items: [
+                {
+                    label: 'training-centers',
+                    permession: [60100002],
+                    icon: 'pi pi-warehouse',
+                    routerLink: ['/quran-course/training-centers']
+                },
+                {
+                    label: 'course-forms',
+                    permession: [60100005],
+                    icon: 'pi pi-receipt',
+                    routerLink: ['/quran-course/course-forms']
+                }
+            ]
         }
     ];
 }

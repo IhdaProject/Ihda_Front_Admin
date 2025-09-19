@@ -10,7 +10,7 @@ import { Types } from 'src/core/enums/types.enum';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { GridResponse } from '../types/base.model';
-import { TeacherSetings } from '@/apps/academics/teachers/common/settings.model';
+import { TeacherSetings } from '@/apps/quran-courses/teachers/common/settings.model';
 import { StorageCategory } from 'src/core/services/file-storage.service';
 
 @Injectable()

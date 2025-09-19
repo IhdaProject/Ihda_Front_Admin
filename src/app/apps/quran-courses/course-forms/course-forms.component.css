@@ -1,0 +1,12 @@
+:host {
+    display: block;
+
+    ::ng-deep .p-togglebutton {
+        padding: 5px;
+    }
+
+    ::ng-deep .p-togglebutton-content {
+        padding: 5px;
+        border-radius: 4px;
+    }
+}

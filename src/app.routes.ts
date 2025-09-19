@@ -14,9 +14,9 @@ export const appRoutes: Routes = [
                 data: { breadcrumb: 'Settings' }
             },
             {
-                path: 'academics',
-                loadChildren: () => import('@/apps/academics/academics.routes'),
-                data: { breadcrumb: 'Academics' }
+                path: 'quran-course',
+                loadChildren: () => import('@/apps/quran-courses/quran-courses.routes'),
+                data: { breadcrumb: 'Quran-course' }
             },
             {
                 path: 'administration',

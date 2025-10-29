@@ -3,6 +3,7 @@ import { CrudService } from './crud.service';
 import { TableColumn } from '../types/table';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
+import { SettingsService } from 'src/shared/services/settings.service';
 
 @Injectable()
 export class RegionsService extends CrudService {
@@ -10,6 +11,7 @@ export class RegionsService extends CrudService {
     override urlUpdate = 'api-rb/region';
     override urlDelete = 'api-rb/region';
     private route = inject(ActivatedRoute);
+    private $settings = inject(SettingsService);
 
     override urlGetAll = 'api-rb/region';
     override title: string = 'countries';
@@ -25,7 +27,7 @@ export class RegionsService extends CrudService {
         },
         {
             field: 'countryName'
-        },
+        }
     ];
 
     override fields: FormlyFieldConfig[] = [
@@ -50,21 +52,15 @@ export class RegionsService extends CrudService {
         },
         {
             key: 'countryId',
-            type: 'input',
+            type: 'select',
             props: {
-                label: 'countryId',
-                placeholder: 'countryId',
-                required: true
+                translate: true,
+                label: 'country',
+                placeholder: 'coutry',
+                required: true,
+                appendTo: 'body',
+                options: this.$settings.getCountries()
             }
-        },
-        {
-            key: 'countryName',
-            type: 'input',
-            props: {
-                label: 'countryName',
-                placeholder: 'countryIdName',
-                required: true
-            }
-        },
+        }
     ];
 }

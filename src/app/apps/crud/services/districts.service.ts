@@ -3,6 +3,8 @@ import { CrudService } from './crud.service';
 import { TableColumn } from '../types/table';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
+import { SettingsService } from 'src/shared/services/settings.service';
+import { tap } from 'rxjs';
 
 @Injectable()
 export class DistrictsService extends CrudService {
@@ -10,6 +12,7 @@ export class DistrictsService extends CrudService {
     override urlUpdate = 'api-rb/district';
     override urlDelete = 'api-rb/district';
     private route = inject(ActivatedRoute);
+    private $settings = inject(SettingsService);
 
     override urlGetAll = 'api-rb/district';
     override title: string = 'districts';
@@ -25,7 +28,7 @@ export class DistrictsService extends CrudService {
         },
         {
             field: 'regionName'
-        },
+        }
     ];
 
     override fields: FormlyFieldConfig[] = [
@@ -49,22 +52,57 @@ export class DistrictsService extends CrudService {
             }
         },
         {
-            key: 'regionId',
-            type: 'input',
+            key: 'country',
+            type: 'select',
             props: {
-                label: 'regionId',
-                placeholder: 'regionId',
-                required: true
+                translate: true,
+                label: 'country',
+                placeholder: 'coutry',
+                required: true,
+                appendTo: 'body',
+                options: this.$settings.getCountries()
             }
         },
         {
-            key: 'regionName',
-            type: 'input',
+            key: 'regionId',
+            type: 'select',
             props: {
-                label: 'regionName',
-                placeholder: 'regionName',
-                required: true
+                translate: true,
+                label: 'region',
+                placeholder: 'region',
+                required: true,
+                appendTo: 'body',
+                options: []
+            },
+            hooks: {
+                onInit: (field) => {
+                    const form = field.formControl?.parent;
+                    if (form) {
+                        form
+                            .get('country')
+                            ?.valueChanges.subscribe((countryId) => {
+                                const filtered = this.$settings
+                                    .getRegions(countryId)
+                                    .pipe(
+                                        tap((regions) => {
+                                            if (
+                                                !regions.find(
+                                                    (t) =>
+                                                        t.value ===
+                                                        field.formControl?.value
+                                                )
+                                            ) {
+                                                field.formControl?.setValue(
+                                                    null
+                                                ); // eski tanlovni tozalash
+                                            }
+                                        })
+                                    );
+                                field.props!.options = filtered;
+                            });
+                    }
+                }
             }
-        },
+        }
     ];
 }

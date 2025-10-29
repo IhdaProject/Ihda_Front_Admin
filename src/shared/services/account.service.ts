@@ -9,17 +9,15 @@ import { GeneralModel } from '../types/general-model';
 })
 export class AccountService {
     currentUser = new BehaviorSubject<Account | null>(null);
-    constructor(private http: HttpClient) {
-        this.initUser();
-    }
-    initUser(): void {
+    constructor(private http: HttpClient) {}
+    initUser() {
         const url = 'http://167.86.71.210/gw/api-auth/';
 
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
         });
 
-        this.http
+        return this.http
             .get<GeneralModel<Account>>(url + 'user/getprofile', { headers })
             .pipe(
                 switchMap((profileRes) => {
@@ -45,7 +43,6 @@ export class AccountService {
                     return of(null);
                 }),
                 take(1)
-            )
-            .subscribe();
+            );
     }
 }

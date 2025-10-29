@@ -12,14 +12,12 @@ import { fullName } from 'src/core/utils/util';
 export class SettingsService {
     constructor(private $base: BaseService) {}
 
-    getRoomTypes() {
+    getCountries() {
         const params = new HttpParams()
-            .append('page', '0')
-            .append('size', '1000')
-            .append('active', 'true')
-            .append('typeCode', Types.RoomTypes);
+            .append('skip', '0')
+            .append('take', '1000');
         return this.$base
-            .get<{ content: TypesResponse[] }>('core/types', { params })
+            .get<{ content: TypesResponse[] }>('api-rb/country', { params })
             .pipe(
                 map((w) =>
                     w.content.map((item) => ({
@@ -30,12 +28,67 @@ export class SettingsService {
             );
     }
 
-    years() {
+    getRegions(countryId: number) {
         const params = new HttpParams()
-            .append('page', '0')
-            .append('size', '1000');
+            .append(
+                'FilteringExpressionsJson',
+                JSON.stringify([
+                    {
+                        PropertyName: 'CountryId',
+                        Value: `${countryId}`,
+                        Type: '=='
+                    }
+                ])
+            )
+            .append('skip', '0')
+            .append('take', '1000');
         return this.$base
-            .get<{ content: TypesResponse[] }>('academic/years', { params })
+            .get<{ content: TypesResponse[] }>('api-rb/region', { params })
+            .pipe(
+                map((w) =>
+                    w.content.map((item) => ({
+                        label: item.name,
+                        value: item.id
+                    }))
+                )
+            );
+    }
+
+    getDistricts(regionId: number) {
+        const params = new HttpParams()
+            .append(
+                'FilteringExpressionsJson',
+                JSON.stringify([
+                    {
+                        PropertyName: 'RegionId',
+                        Value: `${regionId}`,
+                        Type: '=='
+                    }
+                ])
+            )
+            .append('skip', '0')
+            .append('take', '1000');
+        return this.$base
+            .get<{ content: TypesResponse[] }>('api-rb/district', { params })
+            .pipe(
+                map((w) =>
+                    w.content.map((item) => ({
+                        label: item.name,
+                        value: item.id
+                    }))
+                )
+            );
+    }
+
+    getPermissions() {
+        const params = new HttpParams()
+            .append('skip', '0')
+            .append('take', '1000');
+
+        return this.$base
+            .get<{
+                content: TypesResponse[];
+            }>('api-auth/Role/GetPermissions', { params })
             .pipe(
                 map((w) =>
                     w.content.map((item) => ({

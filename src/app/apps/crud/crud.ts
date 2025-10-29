@@ -146,12 +146,16 @@ export default class Crud<T> {
 
     loadData(e: TableLazyLoadEvent) {
         this.loadingData = true;
-        this.$data.getAll<GeneralModel<T[]>>(e)
-        .pipe(
-            map((w) => {this.data.set(w)}),
-            finalize(() => this.loadingData = false),
-            take(1)
-        ).subscribe();
+        this.$data
+            .getAll<GeneralModel<T[]>>(e)
+            .pipe(
+                map((w) => {
+                    this.data.set(w);
+                }),
+                finalize(() => (this.loadingData = false)),
+                take(1)
+            )
+            .subscribe();
     }
 
     submit(model = this.model) {

@@ -36,7 +36,7 @@ import { StorageService } from 'src/core/services/storage.service';
             ></div>
             <form [formGroup]="form" (ngSubmit)="login()">
                 <p-fluid
-                    class="w-full absolute mb-0 bottom-0 text-center bg-surface-900 dark:bg-surface-0 rounded-none h-[27rem]"
+                    class="w-full absolute mb-0 bottom-0 text-center bg-surface-0 dark:bg-surface-900 rounded-none h-[27rem]"
                 >
                     <div
                         class="px-12 md:p-0 w-[29rem] relative text-white"
@@ -51,7 +51,7 @@ import { StorageService } from 'src/core/services/storage.service';
                             </div>
                             <div class="col-span-9 text-left my-auto">
                                 <h2
-                                    class="mb-0 text-surface-0 dark:text-surface-900"
+                                    class="mb-0 text-surface-900 dark:text-surface-0"
                                 >
                                     {{ 'welcome.to.login' | transloco }}
                                 </h2>
@@ -62,7 +62,7 @@ import { StorageService } from 'src/core/services/storage.service';
                             </div>
                             <div class="col-span-12 text-left">
                                 <label
-                                    class="text-surface-400 dark:text-surface-600 mb-1"
+                                    class="text-surface-600 dark:text-surface-400 mb-1"
                                     >{{ 'login' | transloco }}</label
                                 >
                                 <div class="mt-1">
@@ -76,7 +76,7 @@ import { StorageService } from 'src/core/services/storage.service';
                             </div>
                             <div class="col-span-12 text-left">
                                 <label
-                                    class="text-surface-400 dark:text-surface-600 mb-1"
+                                    class="text-surface-600 dark:text-surface-400 mb-1"
                                     >{{ 'password' | transloco }}</label
                                 >
                                 <div class="mt-1">
@@ -102,7 +102,7 @@ import { StorageService } from 'src/core/services/storage.service';
                                 <button
                                     pButton
                                     pRipple
-                                    class="!text-gray-300 hover:!text-gray-900 dark:!text-gray-600 flex justify-center"
+                                    class="!text-gray-300 hover:!text-gray-600 dark:!text-gray-900 flex justify-center"
                                     text
                                 >
                                     Forgot Password?

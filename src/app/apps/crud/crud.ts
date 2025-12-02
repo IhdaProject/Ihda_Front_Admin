@@ -42,7 +42,15 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
 import { GridResponse } from './types/base.model';
 import { GetDeepValuePipe } from './pipes/getDeepValue.pipe';
-import { catchError, finalize, map, take, throwError } from 'rxjs';
+import {
+    catchError,
+    finalize,
+    map,
+    Observable,
+    of,
+    take,
+    throwError
+} from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { FileDownloadPipe } from 'src/shared/pipes/file-download.pipe';
 import { HasPermissionDirective } from 'src/shared/directives/has-permission.directive';
@@ -100,6 +108,8 @@ export default class Crud<T> {
     enableRowClick = input<boolean>(false);
     clickedRow = output<any>();
 
+    getByIdFn = input<((id: any) => Observable<T>) | undefined>(undefined);
+
     filters = input<{
         [s: string]: FilterMetadata | FilterMetadata[];
     }>({});
@@ -141,6 +151,7 @@ export default class Crud<T> {
     visibleDialog = false;
     form = new FormGroup({});
     loadingData = false;
+    loadingDialog = signal<boolean>(false); // Yangi: dialog yuklash holati
 
     data = signal<GeneralModel<T[]> | null>(null);
 
@@ -270,11 +281,45 @@ export default class Crud<T> {
 
     hideDialog() {
         this.visibleDialog = false;
+        this.loadingDialog.set(false);
     }
 
     edit(model: any) {
-        this.model = { ...model };
-        this.visibleDialog = true;
+        const getByIdFunction = this.getByIdFn();
+
+        if (getByIdFunction && model.id) {
+            this.loadingDialog.set(true);
+            this.visibleDialog = true;
+
+            getByIdFunction(model)
+                .pipe(
+                    map((fullModel: any) => {
+                        if (fullModel) {
+                            console.log(fullModel);
+
+                            this.model = { ...fullModel };
+                        }
+                        this.loadingDialog.set(false);
+                    }),
+                    catchError((error) => {
+                        this.$message.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to load item details',
+                            life: 5000
+                        });
+                        // Xatolik yuz bersa ham, mavjud ma'lumotlar bilan ochish
+                        this.model = { ...model };
+                        this.loadingDialog.set(false);
+                        return of(null);
+                    }),
+                    take(1)
+                )
+                .subscribe();
+        } else {
+            this.model = { ...model };
+            this.visibleDialog = true;
+        }
     }
 
     openNew() {

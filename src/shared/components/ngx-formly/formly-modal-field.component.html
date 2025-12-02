@@ -1,0 +1,119 @@
+<div class="p-field relative">
+    <div
+        class="flex items-center gap-3 border surface-border p-3 rounded-xl surface-card hover:border-primary transition-all duration-300 justify-between min-h-[40px] cursor-pointer"
+        (click)="openModal()"
+    >
+        <span
+            class="text-sm overflow-hidden whitespace-nowrap text-ellipsis flex-grow"
+            [ngClass]="
+                selectedLabels() ? 'text-color' : 'text-color-secondary italic'
+            "
+        >
+            {{
+                selectedLabels() || ("Tanlangan ruxsatnomalar yo'q" | transloco)
+            }}
+        </span>
+
+        <button
+            pButton
+            type="button"
+            [icon]="'pi pi-pencil'"
+            [label]="'Tahrirlash' | transloco"
+            (click)="$event.stopPropagation(); openModal()"
+            [disabled]="formControl.disabled || props.disabled"
+            class="p-button-sm p-button-secondary p-button-outlined p-0 w-auto h-auto px-2 flex-shrink-0"
+        ></button>
+    </div>
+
+    <p-drawer
+        [(visible)]="isModalOpen"
+        position="right"
+        [modal]="true"
+        [showCloseIcon]="false"
+        styleClass="w-full md:w-[500px] lg:w-[650px]"
+    >
+        <ng-template pTemplate="header">
+            <div class="flex items-center justify-between w-full pr-1 py-1">
+                <h4 class="text-xl font-bold text-color">
+                    {{ 'Ruxsatnomalarni tanlash' | transloco }}
+                </h4>
+                <button
+                    pButton
+                    type="button"
+                    icon="pi pi-times"
+                    class="p-button-text p-button-rounded p-button-sm !w-8 !h-8"
+                    (click)="closeModal()"
+                ></button>
+            </div>
+        </ng-template>
+
+        <div class="flex-1 overflow-y-auto py-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                @for (option of allPermissions(); track option.value) {
+                    <div
+                        class="flex items-center gap-3 px-4 py-4 cursor-pointer rounded-lg transition-all duration-200 border surface-border"
+                        [ngClass]="
+                            isPermissionSelected(option.value)
+                                ? 'surface-card shadow-md border-primary-500 scale-[1.02]'
+                                : 'surface-ground hover:surface-hover hover:shadow-sm hover:scale-[1.01]'
+                        "
+                        (click)="onPermissionChange(option.value)"
+                    >
+                        <i
+                            class="pi text-2xl ml-2 flex-shrink-0 transition-all"
+                            [ngClass]="
+                                isPermissionSelected(option.value)
+                                    ? 'pi-check-square text-primary'
+                                    : 'pi-square text-500'
+                            "
+                        ></i>
+
+                        <span
+                            class="text-sm leading-snug flex-grow"
+                            [ngClass]="
+                                isPermissionSelected(option.value)
+                                    ? 'text-color font-bold'
+                                    : 'text-color-secondary font-medium'
+                            "
+                        >
+                            {{ option.label | transloco }}
+                        </span>
+                    </div>
+                } @empty {
+                    <div
+                        class="col-span-full flex flex-col items-center justify-center py-20"
+                    >
+                        <i
+                            class="pi pi-inbox text-6xl text-500 mb-4 opacity-50"
+                        ></i>
+                        <p class="text-color-secondary text-base font-medium">
+                            {{ 'Ruxsatnomalar topilmadi.' | transloco }}
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div
+                class="px-6 py-4 border-t surface-border surface-ground flex justify-end gap-3"
+            >
+                <button
+                    pButton
+                    type="button"
+                    label="{{ 'Bekor qilish' | transloco }}"
+                    class="p-button-sm p-button-outlined p-button-secondary"
+                    (click)="closeModal()"
+                ></button>
+                <button
+                    pButton
+                    type="button"
+                    label="{{ 'Tasdiqlash' | transloco }}"
+                    icon="pi pi-check"
+                    class="p-button-sm p-button-primary"
+                    (click)="closeModal(true)"
+                ></button>
+            </div>
+        </ng-template>
+    </p-drawer>
+</div>

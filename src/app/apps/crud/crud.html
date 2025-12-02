@@ -233,15 +233,24 @@
     [header]="(isEditing ? 'edit' : 'create') | transloco"
     [modal]="true"
 >
-    <ng-template #content>
-        <form [formGroup]="form">
-            <formly-form
-                [form]="form"
-                [fields]="fields"
-                [model]="model"
-            ></formly-form>
-        </form>
-    </ng-template>
+    @if (loadingDialog()) {
+        <div class="flex justify-content-center align-items-center p-5">
+            <div class="text-center">
+                <i class="pi pi-spinner pi-spin text-2xl"></i>
+                <p class="mt-2">Loading...</p>
+            </div>
+        </div>
+    } @else {
+        <ng-template #content>
+            <form [formGroup]="form">
+                <formly-form
+                    [form]="form"
+                    [fields]="fields"
+                    [model]="model"
+                ></formly-form>
+            </form>
+        </ng-template>
+    }
 
     <ng-template #footer>
         <p-button

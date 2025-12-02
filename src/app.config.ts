@@ -33,6 +33,7 @@ import { MessageBetterService } from './shared/services/message-better.service';
 import { DatePipe } from '@angular/common';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { TypeUpload } from './shared/components/ngx-formly/type-upload.component';
+import { FormlyModalField } from './shared/components/ngx-formly/formly-modal-field.component';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -100,6 +101,11 @@ export const appConfig: ApplicationConfig = {
                     {
                         name: 'upload',
                         component: TypeUpload,
+                        wrappers: ['form-field']
+                    },
+                    {
+                        name: 'formly-modal-field',
+                        component: FormlyModalField,
                         wrappers: ['form-field']
                     }
                 ]

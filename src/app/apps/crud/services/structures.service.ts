@@ -23,6 +23,9 @@ export class StructuresService extends CrudService {
             field: 'name',
             sortable: true,
             primary: true
+        },
+        {
+            field: 'permissionIds'
         }
     ];
 
@@ -39,7 +42,7 @@ export class StructuresService extends CrudService {
         },
         {
             key: 'permissionIds',
-            type: 'multicheckbox',
+            type: 'formly-modal-field',
             props: {
                 translate: true,
                 label: 'permissionIds',

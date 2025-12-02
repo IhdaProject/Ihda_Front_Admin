@@ -1,7 +1,14 @@
-import { Injectable, effect, signal, computed } from '@angular/core';
+import { Injectable, effect, signal, computed, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
-export type MenuMode = 'static' | 'overlay' | 'horizontal' | 'slim' | 'slim-plus' | 'reveal' | 'drawer';
+export type MenuMode =
+    | 'static'
+    | 'overlay'
+    | 'horizontal'
+    | 'slim'
+    | 'slim-plus'
+    | 'reveal'
+    | 'drawer';
 
 export type ColorScheme = 'light' | 'dark';
 
@@ -42,14 +49,20 @@ interface MenuChangeEvent {
 @Injectable({
     providedIn: 'root'
 })
-export class LayoutService {
+export class LayoutService implements OnInit {
+    ngOnInit(): void {
+        this._config = {
+            ...this._config,
+            darkTheme: localStorage.getItem('darkMode') === 'true'
+        };
+    }
     _config: layoutConfig = {
         ripple: false,
         preset: 'Aura',
         primary: 'noir',
         inputStyle: 'outlined',
         surface: null,
-        darkTheme: false,
+        darkTheme: true,
         menuMode: 'static',
         menuTheme: 'light',
         topbarTheme: 'light',
@@ -103,7 +116,9 @@ export class LayoutService {
 
     isSlimPlus = computed(() => this.layoutConfig().menuMode === 'slim-plus');
 
-    isHorizontal = computed(() => this.layoutConfig().menuMode === 'horizontal');
+    isHorizontal = computed(
+        () => this.layoutConfig().menuMode === 'horizontal'
+    );
 
     isOverlay = computed(() => this.layoutConfig().menuMode === 'overlay');
 
@@ -111,7 +126,11 @@ export class LayoutService {
 
     isSidebarStateChanged = computed(() => {
         const layoutConfig = this.layoutConfig();
-        return layoutConfig.menuMode === 'horizontal' || layoutConfig.menuMode === 'slim' || layoutConfig.menuMode === 'slim-plus';
+        return (
+            layoutConfig.menuMode === 'horizontal' ||
+            layoutConfig.menuMode === 'slim' ||
+            layoutConfig.menuMode === 'slim-plus'
+        );
     });
 
     private initialized = false;
@@ -167,8 +186,10 @@ export class LayoutService {
         const _config = config || this.layoutConfig();
         if (_config.darkTheme) {
             document.documentElement.classList.add('app-dark');
+            localStorage.setItem('darkMode', 'true');
         } else {
             document.documentElement.classList.remove('app-dark');
+            localStorage.setItem('darkMode', 'false');
         }
     }
 

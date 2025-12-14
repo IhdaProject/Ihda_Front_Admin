@@ -40,7 +40,6 @@ import { markAllAsDirty } from 'src/core/utils/util';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
-import { GridResponse } from './types/base.model';
 import { GetDeepValuePipe } from './pipes/getDeepValue.pipe';
 import {
     catchError,

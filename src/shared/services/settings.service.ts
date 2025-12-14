@@ -1,7 +1,7 @@
 import { TypesResponse } from '@/apps/crud/types/types';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 import { Types } from 'src/core/enums/types.enum';
 import { BaseService } from 'src/core/services/base.service';
 import { fullName } from 'src/core/utils/util';
@@ -29,6 +29,7 @@ export class SettingsService {
     }
 
     getRegions(countryId: number) {
+        if (!(countryId > 0)) return of([]);
         const params = new HttpParams()
             .append(
                 'FilteringExpressionsJson',
@@ -55,6 +56,7 @@ export class SettingsService {
     }
 
     getDistricts(regionId: number) {
+        if (!(regionId > 0)) return of([]);
         const params = new HttpParams()
             .append(
                 'FilteringExpressionsJson',

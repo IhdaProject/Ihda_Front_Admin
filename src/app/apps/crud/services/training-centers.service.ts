@@ -24,12 +24,7 @@ export class TrainingCentersService extends CrudService {
         { field: 'description', header: 'Description' },
         { field: 'address', header: 'Address' },
         { field: 'landmark', header: 'Landmark' },
-        { field: 'phoneNumber', header: 'Phone Number' },
-        { field: 'photosLink', header: 'Photos' },
-        { field: 'workingHours', header: 'Working Hours' },
-        { field: 'latitude', header: 'Latitude' },
-        { field: 'longitude', header: 'Longitude' },
-        { field: 'districtId', header: 'District' }
+        { field: 'phoneNumber', header: 'Phone Number' }
     ];
 
     override fields: FormlyFieldConfig[] = [
@@ -77,24 +72,69 @@ export class TrainingCentersService extends CrudService {
         },
         {
             key: 'photosLink',
-            type: 'repeat', // agar formly-repeat qo‘shilgan bo‘lsa, massiv kiritish uchun
-            props: {
-                label: 'Photos'
-            },
+            type: 'repeat-file',
+            props: { label: 'Photo' },
             fieldArray: {
-                type: 'input',
-                props: {
-                    placeholder: 'Photo URL'
-                }
+                fieldGroup: [
+                    {
+                        key: 'file',
+                        type: 'input',
+                        props: { type: 'file' }
+                    },
+                    {
+                        key: 'tempUrl',
+                        type: 'input',
+                        props: { readonly: true }
+                    },
+                    {
+                        key: 'dbUrl',
+                        type: 'input',
+                        props: { readonly: true }
+                    }
+                ]
             }
         },
         {
             key: 'workingHours',
-            type: 'input', // yoki custom select bo‘lishi mumkin
-            props: {
-                label: 'Working Hours',
-                placeholder: 'Enter working hours'
-            }
+            fieldGroupClassName: 'grid grid-cols-2 gap-4',
+            templateOptions: { label: 'Ish vaqtlari' },
+            fieldGroup: [
+                {
+                    key: 'monday',
+                    type: 'input',
+                    templateOptions: { label: 'Dushanba' }
+                },
+                {
+                    key: 'tuesday',
+                    type: 'input',
+                    templateOptions: { label: 'Seshanba' }
+                },
+                {
+                    key: 'wednesday',
+                    type: 'input',
+                    templateOptions: { label: 'Chorshanba' }
+                },
+                {
+                    key: 'thursday',
+                    type: 'input',
+                    templateOptions: { label: 'Payshanba' }
+                },
+                {
+                    key: 'friday',
+                    type: 'input',
+                    templateOptions: { label: 'Juma' }
+                },
+                {
+                    key: 'saturday',
+                    type: 'input',
+                    templateOptions: { label: 'Shanba' }
+                },
+                {
+                    key: 'sunday',
+                    type: 'input',
+                    templateOptions: { label: 'Yakshanba' }
+                }
+            ]
         },
         {
             key: 'latitude',

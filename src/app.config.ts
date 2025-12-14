@@ -34,6 +34,7 @@ import { DatePipe } from '@angular/common';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { TypeUpload } from './shared/components/ngx-formly/type-upload.component';
 import { FormlyModalField } from './shared/components/ngx-formly/formly-modal-field.component';
+import { RepeatFileTypeComponent } from './shared/components/ngx-formly/repeat.type';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -107,6 +108,10 @@ export const appConfig: ApplicationConfig = {
                         name: 'formly-modal-field',
                         component: FormlyModalField,
                         wrappers: ['form-field']
+                    },
+                    {
+                        name: 'repeat-file',
+                        component: RepeatFileTypeComponent
                     }
                 ]
             }

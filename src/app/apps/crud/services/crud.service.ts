@@ -22,10 +22,7 @@ export abstract class CrudService {
 
     getAll<T>(tableLazyLoadEvent: TableLazyLoadEvent) {
         let params = new HttpParams()
-            .append(
-                'skip',
-                `${(tableLazyLoadEvent.first || 0)}`
-            )
+            .append('skip', `${tableLazyLoadEvent.first || 0}`)
             .append('take', `${tableLazyLoadEvent.rows}`);
 
         const sortField = tableLazyLoadEvent.sortField;

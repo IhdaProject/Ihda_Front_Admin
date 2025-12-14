@@ -1,4 +1,4 @@
-import { Injectable, effect, signal, computed, OnInit } from '@angular/core';
+import { Injectable, effect, signal, computed } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type MenuMode =
@@ -49,23 +49,19 @@ interface MenuChangeEvent {
 @Injectable({
     providedIn: 'root'
 })
-export class LayoutService implements OnInit {
-    ngOnInit(): void {
-        this._config = {
-            ...this._config,
-            darkTheme: localStorage.getItem('darkMode') === 'true'
-        };
-    }
+export class LayoutService {
     _config: layoutConfig = {
         ripple: false,
         preset: 'Aura',
         primary: 'noir',
         inputStyle: 'outlined',
         surface: null,
-        darkTheme: true,
+        darkTheme: localStorage.getItem('darkMode') === 'true',
         menuMode: 'static',
-        menuTheme: 'light',
-        topbarTheme: 'light',
+        menuTheme:
+            localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light',
+        topbarTheme:
+            localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light',
         menuProfilePosition: 'end'
     };
 

@@ -75,9 +75,10 @@ export class FormlyModalField
 
         const labels = all
             .filter((p) => selectedIds.includes(p.value))
-            .map((p) => p.label);
+            .map((p) => p.label)
+            .slice(0, 3);
 
-        return labels.join(', ');
+        return labels.join(', ') + '  . . . .';
     });
 
     ngOnInit() {

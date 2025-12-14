@@ -1,13 +1,11 @@
 <div class="p-field relative">
     <div
-        class="flex items-center gap-3 border surface-border p-3 rounded-xl surface-card hover:border-primary transition-all duration-300 justify-between min-h-[40px] cursor-pointer"
+        class="flex items-center gap-3 border bg-black p-3 rounded-lg surface-card justify-between min-h-[40px] cursor-pointer"
         (click)="openModal()"
     >
+        <div class="min-w-1"></div>
         <span
-            class="text-sm overflow-hidden whitespace-nowrap text-ellipsis flex-grow"
-            [ngClass]="
-                selectedLabels() ? 'text-color' : 'text-color-secondary italic'
-            "
+            class="text-sm overflow-hidden whitespace-nowrap text-ellipsis flex-grow w-full text-color"
         >
             {{
                 selectedLabels() || ("Tanlangan ruxsatnomalar yo'q" | transloco)
@@ -21,7 +19,7 @@
             [label]="'Tahrirlash' | transloco"
             (click)="$event.stopPropagation(); openModal()"
             [disabled]="formControl.disabled || props.disabled"
-            class="p-button-sm p-button-secondary p-button-outlined p-0 w-auto h-auto px-2 flex-shrink-0"
+            class="rounded-md p-0 w-auto h-auto px-2 flex-shrink-0"
         ></button>
     </div>
 
@@ -51,7 +49,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 @for (option of allPermissions(); track option.value) {
                     <div
-                        class="flex items-center gap-3 px-4 py-4 cursor-pointer rounded-lg transition-all duration-200 border surface-border"
+                        class="flex items-center gap-3 px-4 py-4 cursor-pointer transition-all duration-200"
                         [ngClass]="
                             isPermissionSelected(option.value)
                                 ? 'surface-card shadow-md border-primary-500 scale-[1.02]'

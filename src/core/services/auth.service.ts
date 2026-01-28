@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { LoginResponse } from '../types/auth';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs';
-import { Constants } from '../configs/constants';
+import { tap } from 'rxjs';
 import { GeneralModel } from 'src/shared/types/general-model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +17,7 @@ export class AuthService {
     ) {}
 
     login(username: string, password: string) {
-        const url = 'http://167.86.71.210/gw/api-auth/auth/sign';
+        const url = `${environment.API_BASE_URL}/api-auth/auth/sign`;
 
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     refreshToken(refreshToken: string) {
-        const url = 'http://167.86.71.210/gw/api-auth/auth/refreshtoken';
+        const url = `${environment.API_BASE_URL}/api-auth/auth/refreshtoken`;
 
         const headers = new HttpHeaders({
             'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export class AuthService {
     }
 
     logout() {
-        const url = 'http://167.86.71.210/gw/api-auth/auth/logout';
+        const url = `${environment.API_BASE_URL}/api-auth/auth/logout`;
 
         return this.http.delete<GeneralModel<LoginResponse>>(url).pipe(
             tap((w) => {

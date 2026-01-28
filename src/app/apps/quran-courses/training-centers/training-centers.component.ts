@@ -15,11 +15,7 @@ import { TrainingCentersService } from '@/apps/crud/services/training-centers.se
 // TODO: MAKE BASE GRID COMPONENT IF REALYY NEEDED
 @Component({
     selector: 'app-training-centers',
-    imports: [
-        RouterLink,
-        Crud,
-        Button
-    ],
+    imports: [RouterLink, Crud, Button],
     providers: [TrainingCentersService],
     template: `
         <app-crud
@@ -71,8 +67,7 @@ export default class TrainingCentersComponent {
     parentTypeName = signal<string | undefined>(undefined);
     crud = viewChild<Crud<any>>('crud');
 
-    constructor() {
-    }
+    constructor() {}
 
     back() {
         this.location.back();

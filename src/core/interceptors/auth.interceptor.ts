@@ -40,7 +40,6 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError((error) => {
                 if (
                     error instanceof HttpErrorResponse &&
-                    !authReq.url.includes('openid-connect/token') &&
                     error.status === 401
                 ) {
                     return this.handle401Error(authReq, next);
@@ -63,14 +62,21 @@ export class AuthInterceptor implements HttpInterceptor {
                     switchMap((res) => {
                         this.isRefreshing = false;
                         return next.handle(
-                            this.addTokenHeader(request, res.content.accessToken)
+                            this.addTokenHeader(
+                                request,
+                                res.content.accessToken
+                            )
                         );
                     }),
                     catchError((err) => {
+                        if (
+                            err instanceof HttpErrorResponse &&
+                            err.status === 401
+                        ) {
+                            this.isRefreshing = false;
+                            this.authService.logoutLocal();
+                        }
 
-                        this.isRefreshing = false;
-
-                        this.authService.logoutLocal();
                         return throwError(() => err);
                     })
                 );

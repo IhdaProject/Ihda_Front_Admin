@@ -20,7 +20,6 @@ import { map, tap, switchMap, of } from 'rxjs';
         <app-crud
             [extraBtnsTemplate]="extraBtns"
             [widthActions]="'150px'"
-            [getByIdFn]="getUserById"
             [editPermission]="[10110006]"
             [addPermission]="[10110005]"
             [deletePermission]="[10110009]"

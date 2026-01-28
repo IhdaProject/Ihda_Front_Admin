@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { TableColumn } from '../types/table';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BaseService } from 'src/core/services/base.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -19,6 +19,10 @@ export abstract class CrudService {
     abstract urlDelete: string;
 
     protected $base = inject(BaseService);
+
+    constructor() {
+        console.log('Crud');
+    }
 
     getAll<T>(tableLazyLoadEvent: TableLazyLoadEvent) {
         let params = new HttpParams()
@@ -53,5 +57,9 @@ export abstract class CrudService {
     }
     delete<T>(id: number): Observable<T> {
         return this.$base.delete<T>(this.urlDelete, id);
+    }
+
+    editModal(id: number): Observable<any> {
+        return of(null);
     }
 }

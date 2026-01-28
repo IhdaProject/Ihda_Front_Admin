@@ -23,6 +23,7 @@
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/primeng": "^7.0.0",
     "@primeng/themes": "^19.0.2",
+    "angular8-yandex-maps": "^19.0.0",
     "chart.js": "4.4.2",
     "primeclt": "^0.1.5",
     "primeicons": "^7.0.0",

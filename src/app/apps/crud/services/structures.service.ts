@@ -4,6 +4,8 @@ import { TableColumn } from '../types/table';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { SettingsService } from 'src/shared/services/settings.service';
+import { HttpParams } from '@angular/common/http';
+import { of, switchMap, map } from 'rxjs';
 
 @Injectable()
 export class StructuresService extends CrudService {
@@ -54,4 +56,43 @@ export class StructuresService extends CrudService {
             }
         }
     ];
+
+    override editModal(id: number) {
+        return this.getUserById(id);
+    }
+
+    getUserById = (id: number) => {
+        const params = new HttpParams()
+            .append(
+                'FilteringExpressionsJson',
+                JSON.stringify([
+                    {
+                        PropertyName: 'structureid',
+                        Value: `${id}`,
+                        Type: '=='
+                    }
+                ])
+            )
+            .append('skip', '0')
+            .append('take', '1000');
+        return of(null).pipe(
+            switchMap((res) =>
+                this.$base
+                    .get<any>('api-auth/Role/GetStructureById', {
+                        params
+                    })
+                    .pipe(
+                        map((res) => {
+                            return {
+                                permissionIds: (res.content as any[]).map(
+                                    (l) => {
+                                        return l.id as number;
+                                    }
+                                )
+                            };
+                        })
+                    )
+            )
+        );
+    };
 }

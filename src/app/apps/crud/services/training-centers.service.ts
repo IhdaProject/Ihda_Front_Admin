@@ -138,21 +138,17 @@ export class TrainingCentersService extends CrudService {
         },
         {
             key: 'latitude',
-            type: 'input',
+            type: 'map',
             props: {
-                type: 'number',
-                label: 'Latitude',
-                placeholder: 'Enter latitude'
+                translate: true,
+                label: 'location',
+                required: true
             }
         },
         {
             key: 'longitude',
             type: 'input',
-            props: {
-                type: 'number',
-                label: 'Longitude',
-                placeholder: 'Enter longitude'
-            }
+            className: 'hidden'
         },
         {
             key: 'countryId',
@@ -249,4 +245,9 @@ export class TrainingCentersService extends CrudService {
             }
         }
     ];
+
+    override create(model: any) {
+        const formData = new FormData();
+        return super.create<any>(formData);
+    }
 }

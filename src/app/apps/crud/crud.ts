@@ -147,7 +147,7 @@ export default class Crud<T> {
 
     model = { ...this.$data.model };
 
-    visibleDialog = false;
+    visibleDialog = signal(false);
     form = new FormGroup({});
     loadingData = false;
     loadingDialog = signal<boolean>(false); // Yangi: dialog yuklash holati
@@ -279,52 +279,64 @@ export default class Crud<T> {
     }
 
     hideDialog() {
-        this.visibleDialog = false;
+        this.visibleDialog.set(false);
         this.loadingDialog.set(false);
     }
 
     edit(model: any) {
         const getByIdFunction = this.getByIdFn();
 
-        if (getByIdFunction && model.id) {
-            this.loadingDialog.set(true);
-            this.visibleDialog = true;
+        this.$data.editModal(model.id).subscribe((res) => {
+            if (res) {
+                this.model = { ...model, ...res };
+                this.visibleDialog.set(true);
 
-            getByIdFunction(model)
-                .pipe(
-                    map((fullModel: any) => {
-                        if (fullModel) {
-                            console.log(fullModel);
+                return;
+            }
 
-                            this.model = { ...fullModel };
-                        }
-                        this.loadingDialog.set(false);
-                    }),
-                    catchError((error) => {
-                        this.$message.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: 'Failed to load item details',
-                            life: 5000
-                        });
-                        // Xatolik yuz bersa ham, mavjud ma'lumotlar bilan ochish
-                        this.model = { ...model };
-                        this.loadingDialog.set(false);
-                        return of(null);
-                    }),
-                    take(1)
-                )
-                .subscribe();
-        } else {
             this.model = { ...model };
-            this.visibleDialog = true;
-        }
+            this.visibleDialog.set(true);
+        });
+
+        // if (getByIdFunction && model.id) {
+        //     this.loadingDialog.set(true);
+        //     this.visibleDialog = true;
+
+        //     getByIdFunction(model)
+        //         .pipe(
+        //             map((fullModel: any) => {
+        //                 if (fullModel) {
+        //                     console.log(fullModel);
+
+        //                     this.model = { ...fullModel };
+        //                 }
+        //                 this.loadingDialog.set(false);
+        //             }),
+        //             catchError((error) => {
+        //                 this.$message.add({
+        //                     severity: 'error',
+        //                     summary: 'Error',
+        //                     detail: 'Failed to load item details',
+        //                     life: 5000
+        //                 });
+        //                 // Xatolik yuz bersa ham, mavjud ma'lumotlar bilan ochish
+        //                 this.model = { ...model };
+        //                 this.loadingDialog.set(false);
+        //                 return of(null);
+        //             }),
+        //             take(1)
+        //         )
+        //         .subscribe();
+        // } else {
+        //     this.model = { ...model };
+        //     this.visibleDialog = true;
+        // }
     }
 
     openNew() {
         this.form.reset();
         this.model = { ...this.$data.model };
-        this.visibleDialog = true;
+        this.visibleDialog.set(true);
     }
 
     reload() {

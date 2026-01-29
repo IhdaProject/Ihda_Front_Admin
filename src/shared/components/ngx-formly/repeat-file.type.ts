@@ -320,6 +320,7 @@ export class RepeatFileTypeComponent extends FieldArrayType {
     }
 
     viewFile(file: FileUrlModel) {
+        environment.API_BASE_URL + '/api-fm/file/upload';
         if (file?.tempUrl) {
             window.open(file.tempUrl, '_blank');
         }

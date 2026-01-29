@@ -18,7 +18,7 @@
         (onLazyLoad)="loadData($event)"
     >
         <ng-template #caption>
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                     @if (enableBack) {
                         <p-button
@@ -34,7 +34,7 @@
 
                     <ng-content select="[titleLeft]"></ng-content>
                 </div>
-                <section class="flex gap-2">
+                <section class="flex gap-3">
                     <p-iconfield>
                         <p-inputicon styleClass="pi pi-search" />
                         <input

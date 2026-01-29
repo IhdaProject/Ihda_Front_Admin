@@ -29,37 +29,18 @@ import { StorageService } from 'src/core/services/storage.service';
         ReactiveFormsModule
     ],
     template: `
-        <div class="overflow-hidden margin-0 relative h-screen">
-            <div
-                class="bg-cover bg-center"
-                style="background-image: url('/layout/images/pages/login/bg-login.jpg'); height: calc(100% - 370px);"
-            ></div>
+        <div
+            class="overflow-hidden margin-0 relative h-screen flex items-center justify-center"
+        >
             <form [formGroup]="form" (ngSubmit)="login()">
                 <p-fluid
-                    class="w-full absolute mb-0 bottom-0 text-center bg-surface-0 dark:bg-surface-900 rounded-none h-[27rem]"
+                    class="w-full text-center bg-surface-absolute0 dark:bg-surface-900 rounded"
                 >
                     <div
                         class="px-12 md:p-0 w-[29rem] relative text-white"
                         style="margin-left: -200px; top: 30px; left: 50%;"
                     >
                         <div class="grid grid-cols-12 gap-4">
-                            <div class="col-span-3 text-left">
-                                <img
-                                    src="/layout/images/pages/login/icon-login.svg"
-                                    alt="avalon-ng"
-                                />
-                            </div>
-                            <div class="col-span-9 text-left my-auto">
-                                <h2
-                                    class="mb-0 text-surface-900 dark:text-surface-0"
-                                >
-                                    {{ 'welcome.to.login' | transloco }}
-                                </h2>
-                                <span
-                                    class="text-surface-500 dark:text-surface-600 text-sm"
-                                    >{{ 'asu.admin.panel' | transloco }}</span
-                                >
-                            </div>
                             <div class="col-span-12 text-left">
                                 <label
                                     class="text-surface-600 dark:text-surface-400 mb-1"

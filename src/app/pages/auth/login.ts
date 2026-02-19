@@ -10,11 +10,9 @@ import { Router, RouterModule } from '@angular/router';
 import { LayoutService } from '@/layout/service/layout.service';
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
-import { AppConfigurator } from '@/layout/components/app.configurator';
 import { AuthService } from 'src/core/services/auth.service';
 import { markAllAsDirty } from 'src/core/utils/util';
 import { TranslocoModule } from '@jsverse/transloco';
-import { StorageService } from 'src/core/services/storage.service';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +23,6 @@ import { StorageService } from 'src/core/services/storage.service';
         RouterModule,
         ButtonModule,
         FluidModule,
-        AppConfigurator,
         ReactiveFormsModule
     ],
     template: `
@@ -94,7 +91,6 @@ import { StorageService } from 'src/core/services/storage.service';
                 </p-fluid>
             </form>
         </div>
-        <app-configurator simple />
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })

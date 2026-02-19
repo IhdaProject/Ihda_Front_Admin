@@ -12,20 +12,12 @@ import { filter, Subscription } from 'rxjs';
 import { AppTopbar } from './app.topbar';
 import { AppSidebar } from './app.sidebar';
 import { LayoutService } from '@/layout/service/layout.service';
-import { AppConfigurator } from './app.configurator';
 import { AppBreadcrumb } from './app.breadcrumb';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [
-        CommonModule,
-        AppTopbar,
-        AppSidebar,
-        RouterModule,
-        AppConfigurator,
-        AppBreadcrumb
-    ],
+    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppBreadcrumb],
     template: `<div class="layout-container" [ngClass]="containerClass()">
         <div app-topbar></div>
         <div app-sidebar></div>
@@ -35,9 +27,8 @@ import { AppBreadcrumb } from './app.breadcrumb';
             <div class="layout-content">
                 <router-outlet></router-outlet>
             </div>
-<!--            <div app-footer></div>-->
+            <!--            <div app-footer></div>-->
         </div>
-        <app-configurator></app-configurator>
         <div class="layout-mask animate-fadein"></div>
     </div> `,
     changeDetection: ChangeDetectionStrategy.OnPush

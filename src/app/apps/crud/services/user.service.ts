@@ -12,10 +12,16 @@ export class UserService extends CrudService {
     override title: string = 'users';
     override columns: TableColumn[] = [
         {
+            field: 'avatarUrl',
+            sortable: false,
+            primary: false,
+            type: 'image',
+        },
+        {
             field: 'fullName',
             sortable: true,
             primary: true
-        }
+        },
     ];
 
     override fields: FormlyFieldConfig[] = [

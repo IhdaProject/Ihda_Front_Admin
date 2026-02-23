@@ -1,8 +1,8 @@
 export interface Account {
     id: number;
     permissions: number[];
-    structurestructuresId: number[];
-    StructuresNames?: string[];
+    structuresId: number[];
+    structuresName?: string[];
     fullName?: string;
-    avatar?: string;
+    avatarUrl?: string;
 }

@@ -53,6 +53,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { FileDownloadPipe } from 'src/shared/pipes/file-download.pipe';
 import { HasPermissionDirective } from 'src/shared/directives/has-permission.directive';
+import { ImageViewPipe } from 'src/shared/pipes/image-view.pipe';
 
 interface Column {
     field: string;
@@ -95,6 +96,7 @@ interface ExportColumn {
         NgTemplateOutlet,
         GetDeepValuePipe,
         FileDownloadPipe,
+        ImageViewPipe,
         AsyncPipe,
         HasPermissionDirective
     ],

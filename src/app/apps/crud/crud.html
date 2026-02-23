@@ -94,17 +94,11 @@
                                         col.field | getDeepValue: rowData;
                                         as fileKey
                                     ) {
-                                        @if (
-                                            fileKey | appFileDownload | async;
-                                            as imgSrc
-                                        ) {
-                                            <img
-                                                [src]="imgSrc"
-                                                [alt]="rowData[col.field]"
-                                                style="width: 100px"
-                                                class="rounded"
-                                            />
-                                        }
+                                        <img
+                                            [src]="fileKey | appImageWiev"
+                                            [alt]="rowData[col.field]"
+                                            class="w-8 h-8 rounded-full"
+                                        />
                                     }
                                 }
                                 @case ('price') {

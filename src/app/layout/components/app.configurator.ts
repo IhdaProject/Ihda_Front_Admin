@@ -46,7 +46,7 @@ declare type SurfacesType = {
     standalone: true,
     imports: [CommonModule, FormsModule, SelectButtonModule, DrawerModule, ToggleSwitchModule, RadioButtonModule, TooltipModule, ButtonModule],
     template: `
-        <button *ngIf="simple" class="layout-config-button config-link" type="button" (click)="toggleConfigSidebar()">
+        <button class="layout-config-button config-link" type="button" (click)="toggleConfigSidebar()">
             <i class="pi pi-cog"></i>
         </button>
         <p-drawer [visible]="visible()" (onHide)="onDrawerHide()" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'" styleClass="layout-config-sidebar w-80" header="Settings">

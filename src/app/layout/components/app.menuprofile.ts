@@ -13,11 +13,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { map, Subscription, takeUntil } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { AuthService } from 'src/core/services/auth.service';
 import { AccountService } from 'src/shared/services/account.service';
 import { Account } from 'src/shared/types/account';
 import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
     selector: '[app-menu-profile]',
@@ -28,18 +29,18 @@ import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
             pTooltip="Profile"
             [tooltipDisabled]="isTooltipDisabled()"
         >
-            @if (account?.avatar) {
+            @if (account?.avatarUrl) {
                 <img
-                    [src]="account?.avatar"
+                    [src]="getUrl(account?.avatarUrl)"
                     alt="avatar"
-                    style="width: 32px; height: 32px;"
+                    class="w-8 h-8 rounded-full"
                 />
             } @else {
                 <i class="pi pi-user text-start"></i>
             }
             <span class="text-start">
                 <strong>{{ account?.fullName }}</strong>
-                <small>{{ account?.StructuresNames?.join(', ') }}</small>
+                <small>{{ account?.structuresName?.join(', ') }}</small>
             </span>
             <i
                 class="layout-menu-profile-toggler pi pi-fw"
@@ -103,6 +104,10 @@ export class AppMenuProfile implements OnDestroy {
     layoutService = inject(LayoutService);
     authService = inject(AuthService);
     accountService = inject(AccountService);
+
+    getUrl(url: string | undefined) : string {
+        return environment.API_BASE_URL + url;
+    }
 
     renderer = inject(Renderer2);
 

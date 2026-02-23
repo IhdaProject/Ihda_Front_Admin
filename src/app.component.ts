@@ -12,7 +12,7 @@ import { AppConfigurator } from '@/layout/components/app.configurator';
     template: `<router-outlet></router-outlet>
         <p-toast />
         <p-confirmDialog [style]="{ width: '450px' }" />
-        <app-configurator simple />`,
+        <app-configurator />`,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {}

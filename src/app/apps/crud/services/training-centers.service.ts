@@ -4,7 +4,7 @@ import { TableColumn } from '../types/table';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { ActivatedRoute } from '@angular/router';
 import { SettingsService } from 'src/shared/services/settings.service';
-import { tap } from 'rxjs';
+import { map, Observable, of, switchMap, tap } from 'rxjs';
 
 @Injectable()
 export class TrainingCentersService extends CrudService {
@@ -76,11 +76,6 @@ export class TrainingCentersService extends CrudService {
             props: { label: 'Photo' },
             fieldArray: {
                 fieldGroup: [
-                    {
-                        key: 'file',
-                        type: 'input',
-                        props: { type: 'file' }
-                    },
                     {
                         key: 'tempUrl',
                         type: 'input',
@@ -243,11 +238,39 @@ export class TrainingCentersService extends CrudService {
                     }
                 }
             }
+        },
+        {
+            key: 'encryptUserIds',
+            type: 'formly-modal-field',
+            props: {
+                translate: true,
+                label: 'encryptUserIds',
+                placeholder: 'encryptUserIds',
+                required: true,
+                appendTo: 'body',
+                multiple: true,
+                options: this.$settings.getUsers()
+            }
         }
     ];
 
-    override create(model: any) {
-        const formData = new FormData();
-        return super.create<any>(formData);
+    override editModal(id: number) {
+        return this.getTrainingCenterById(id);
     }
+
+    getTrainingCenterById = (id: number) => {
+        return of(null).pipe(
+            switchMap((res) =>
+                this.$base
+                    .get<any>(
+                        'api-qc/TrainingCenter/GetTrainingCenterById/' + id
+                    )
+                    .pipe(
+                        map((res) => {
+                            return res.content;
+                        })
+                    )
+            )
+        );
+    };
 }

@@ -1,29 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldArrayType, FormlyModule } from '@ngx-formly/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
-interface FileUrlModel {
-    dbUrl: string; // Bazaga boradigan qisqa yo'l
-    tempUrl: string; // UI'da ko'rinadigan to'liq URL
-}
-
-interface ResponseModel<T> {
-    data: T;
-    success: boolean;
-    message?: string;
-}
+import { GeneralModel } from 'src/shared/types/general-model';
+import { ImageViewPipe } from 'src/shared/pipes/image-view.pipe';
 
 interface FileItemDto {
-    dbUrl: string; // Bazada saqlanadigan path
-    tempUrl: string; // UI uchun to'liq URL
+    dbUrl: string;
+    tempUrl: string;
 }
 
 @Component({
     selector: 'formly-repeat-file',
     standalone: true,
-    imports: [CommonModule, FormlyModule, HttpClientModule],
+    imports: [CommonModule, FormlyModule, ImageViewPipe],
     template: `
         <div class="file-upload-container">
             <input
@@ -39,14 +30,14 @@ interface FileItemDto {
                 <div class="file-preview">
                     <img
                         *ngIf="isImage(file.tempUrl)"
-                        [src]="file.tempUrl"
+                        [src]="file.tempUrl | appImageWiev"
                         alt="Preview"
                         class="preview-image"
                     />
 
                     <video
                         *ngIf="isVideo(file.tempUrl)"
-                        [src]="file.tempUrl"
+                        [src]="file.tempUrl | appImageWiev"
                         class="preview-video"
                         muted
                     ></video>
@@ -275,7 +266,6 @@ interface FileItemDto {
                 color: white;
             }
 
-            /* Dark mode support */
             :host-context([data-theme='dark']) .file-item {
                 background: #1e1e1e;
                 border-color: #333;
@@ -297,36 +287,30 @@ export class RepeatFileTypeComponent extends FieldArrayType {
 
         selectedFiles.forEach((file) => {
             const formData = new FormData();
-            // API record FileDto(IFormFile File) kutayotgani uchun 'File' kalitidan foydalanamiz
             formData.append('File', file);
-
-            // Server endpointini formly configdan yoki defaultdan olamiz
             const endpoint = environment.API_BASE_URL + '/api-fm/file/upload';
 
             this.http
-                .post<ResponseModel<FileItemDto>>(endpoint, formData)
+                .post<GeneralModel<FileItemDto>>(endpoint, formData)
                 .subscribe({
                     next: (res) => {
-                        if (res.success && res.data) {
-                            // Formly modeliga { dbUrl, tempUrl } ni qo'shish
-                            this.add(this.model.length, res.data);
+                        if (res.code === 200 && res.content) {
+                            this.add(this.model?.length ?? 0, res.content);
                         }
                     },
                     error: (err) => console.error('Upload error:', err)
                 });
         });
 
-        event.target.value = ''; // Inputni tozalash
+        event.target.value = '';
     }
 
-    viewFile(file: FileUrlModel) {
-        environment.API_BASE_URL + '/api-fm/file/upload';
+    viewFile(file: FileItemDto) {
         if (file?.tempUrl) {
-            window.open(file.tempUrl, '_blank');
+            window.open(environment.API_BASE_URL + file.tempUrl, '_blank');
         }
     }
 
-    // URL kengaytmasiga qarab turni aniqlash
     private getExt(url: string): string {
         if (!url) return '';
         return url.split(/[#?]/)[0].split('.').pop()?.toLowerCase() || '';

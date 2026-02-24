@@ -20,20 +20,18 @@ import { Observable, take } from 'rxjs';
 import { TranslocoModule } from '@jsverse/transloco';
 import { DrawerModule } from 'primeng/drawer';
 
-// getPermissions() qaytarishi kerak bo'lgan kutilgan tur
-interface PermissionOption {
-    value: number; // Yoki string
+interface SelectionOption {
+    value: string | number;
     label: string;
 }
 
-// Props turini kengaytirish
 interface ModalPermissionsProps extends FormlyFieldProps {
     buttonText?: string;
-    options: Observable<PermissionOption[]>; // Permissions list
+    options: Observable<SelectionOption[]>;
 }
 
 @Component({
-    selector: 'app-formly-modal-field', // Selector sizning yangi component nomingizga mos
+    selector: 'app-formly-modal-field',
     standalone: true,
     imports: [
         CommonModule,
@@ -50,24 +48,19 @@ export class FormlyModalField
     extends FieldType<FieldTypeConfig<ModalPermissionsProps>>
     implements OnInit
 {
-    // Modelga yozishdan oldin modal ichida vaqtinchalik tanlovni ushlab turish
-    currentSelection = signal<number[]>([]);
+    currentSelection = signal<(string | number)[]>([]);
 
-    // FIX 1: Display qiymatini reaktiv ushlab turish uchun signal
-    modelValueSignal = signal<number[]>([]);
+    modelValueSignal = signal<(string | number)[]>([]);
 
-    // Modal holati
     isModalOpen = signal(false);
 
-    // Barcha ruxsatnomalarni saqlash uchun sinyal
-    allPermissions = signal<PermissionOption[]>([]);
+    allSelections = signal<SelectionOption[]>([]);
 
     private $settings = inject(SettingsService);
 
-    // FIX 2: selectedLabels endi modelValueSignal ga bog'liq
     selectedLabels = computed(() => {
-        const selectedIds = this.modelValueSignal(); // <-- ModelValueSignal dan o'qiydi
-        const all = this.allPermissions();
+        const selectedIds = this.modelValueSignal();
+        const all = this.allSelections();
 
         if (selectedIds.length === 0 || all.length === 0) {
             return '';
@@ -82,66 +75,48 @@ export class FormlyModalField
     });
 
     ngOnInit() {
-        // FIX 3: Komponent yuklanganda formControl.value ni display signaliga yuklash.
         this.modelValueSignal.set(this.formControl.value || []);
 
-        // 1. Ruxsatnomalar listini Service orqali olish (faqat bir marta)
-        this.$settings
-            .getPermissions()
-            .pipe(take(1))
-            .subscribe((perms) => {
-                this.allPermissions.set(perms as unknown as PermissionOption[]);
-            });
+        this.field.props?.options?.pipe(take(1)).subscribe((perms) => {
+            this.allSelections.set(perms as unknown as SelectionOption[]);
+        });
 
-        // 2. Tashqi model o'zgarganda (masalan, API orqali) displayni yangilash
         this.formControl.valueChanges.subscribe((value) => {
-            // Faqat tashqaridan kelgan o'zgarishlar uchun displayni yangilaydi
             this.modelValueSignal.set(value || []);
         });
     }
 
     openModal() {
-        // Modal ochilganda modeldagi joriy qiymatni sinyalga yuklash (edit qilish uchun)
-        // currentSelection display signalining joriy qiymatidan boshlanadi.
         this.currentSelection.set(this.modelValueSignal() || []);
         this.isModalOpen.set(true);
     }
 
     closeModal(commitChanges: boolean = false) {
         if (commitChanges) {
-            // OK bosilganda:
-            // 1. Formly modelini yangilash
             this.formControl.setValue(this.currentSelection());
 
-            // FIX 4: Display signalini ham yangilash. Bu 'selectedLabels' ni qayta hisoblashga majbur qiladi.
             this.modelValueSignal.set(this.currentSelection());
 
             this.formControl.markAsDirty();
             this.formControl.markAsTouched();
         }
-        // Agar commitChanges false bo'lsa (backdrop bosilganda), qiymatlar bekor qilinmaydi
         this.isModalOpen.set(false);
     }
 
-    // Joriy ruxsatnoma (ID) modal ichida tanlanganmi
-    isPermissionSelected(permissionId: number): boolean {
-        return this.currentSelection().includes(permissionId);
+    isOptionsSelected(optionsId: string | number): boolean {
+        return this.currentSelection().includes(optionsId);
     }
 
-    // Modal ichidagi element bosilganda tanlovni almashtirish
-    onPermissionChange(permissionId: number): void {
-        const currentIds: number[] = this.currentSelection();
-        let newIds: number[];
+    onOptionsChange(optionsId: string | number): void {
+        const currentIds: (string | number)[] = this.currentSelection();
+        let newIds: (string | number)[];
 
-        if (currentIds.includes(permissionId)) {
-            // Agar tanlangan bo'lsa, uni o'chirish
-            newIds = currentIds.filter((id) => id !== permissionId);
+        if (currentIds.includes(optionsId)) {
+            newIds = currentIds.filter((id) => id !== optionsId);
         } else {
-            // Agar tanlanmagan bo'lsa, uni qo'shish
-            newIds = [...currentIds, permissionId];
+            newIds = [...currentIds, optionsId];
         }
 
-        // Sinnalni yangilash
         this.currentSelection.set(newIds);
     }
 }

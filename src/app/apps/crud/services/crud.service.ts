@@ -20,9 +20,7 @@ export abstract class CrudService {
 
     protected $base = inject(BaseService);
 
-    constructor() {
-        console.log('Crud');
-    }
+    constructor() {}
 
     getAll<T>(tableLazyLoadEvent: TableLazyLoadEvent) {
         let params = new HttpParams()

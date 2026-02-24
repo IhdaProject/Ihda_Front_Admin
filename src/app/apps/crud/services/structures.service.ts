@@ -58,10 +58,10 @@ export class StructuresService extends CrudService {
     ];
 
     override editModal(id: number) {
-        return this.getUserById(id);
+        return this.getStructureById(id);
     }
 
-    getUserById = (id: number) => {
+    getStructureById = (id: number) => {
         const params = new HttpParams()
             .append(
                 'FilteringExpressionsJson',

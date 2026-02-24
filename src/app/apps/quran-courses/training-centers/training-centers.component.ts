@@ -20,7 +20,7 @@ import { TrainingCentersService } from '@/apps/crud/services/training-centers.se
     template: `
         <app-crud
             [extraBtnsTemplate]="extraBtns"
-            [widthActions]="'150px'"
+            [widthActions]="'200px'"
             [editPermission]="[60100007]"
             [addPermission]="[60100001]"
             [viewPermission]="[60100003]"

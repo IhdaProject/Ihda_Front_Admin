@@ -95,9 +95,7 @@ interface ExportColumn {
         ReactiveFormsModule,
         NgTemplateOutlet,
         GetDeepValuePipe,
-        FileDownloadPipe,
         ImageViewPipe,
-        AsyncPipe,
         HasPermissionDirective
     ],
     templateUrl: './crud.html',

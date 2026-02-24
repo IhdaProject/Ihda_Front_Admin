@@ -5,6 +5,7 @@ import { map, of } from 'rxjs';
 import { Types } from 'src/core/enums/types.enum';
 import { BaseService } from 'src/core/services/base.service';
 import { fullName } from 'src/core/utils/util';
+import { Account } from '../types/account';
 
 @Injectable({
     providedIn: 'root'
@@ -96,6 +97,25 @@ export class SettingsService {
                     w.content.map((item) => ({
                         label: item.name,
                         value: item.id
+                    }))
+                )
+            );
+    }
+
+    getUsers() {
+        const params = new HttpParams()
+            .append('skip', '0')
+            .append('take', '1000');
+
+        return this.$base
+            .get<{
+                content: Account[];
+            }>('api-auth/User/GetUsers', { params })
+            .pipe(
+                map((w) =>
+                    w.content.map((item) => ({
+                        label: item.fullName,
+                        value: item.marketId
                     }))
                 )
             );

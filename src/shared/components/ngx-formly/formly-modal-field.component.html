@@ -47,20 +47,20 @@
 
         <div class="flex-1 overflow-y-auto py-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                @for (option of allPermissions(); track option.value) {
+                @for (option of allSelections(); track option.value) {
                     <div
                         class="flex items-center gap-3 px-4 py-4 cursor-pointer transition-all duration-200"
                         [ngClass]="
-                            isPermissionSelected(option.value)
+                            isOptionsSelected(option.value)
                                 ? 'surface-card shadow-md border-primary-500 scale-[1.02]'
                                 : 'surface-ground hover:surface-hover hover:shadow-sm hover:scale-[1.01]'
                         "
-                        (click)="onPermissionChange(option.value)"
+                        (click)="onOptionsChange(option.value)"
                     >
                         <i
                             class="pi text-2xl ml-2 flex-shrink-0 transition-all"
                             [ngClass]="
-                                isPermissionSelected(option.value)
+                                isOptionsSelected(option.value)
                                     ? 'pi-check-square text-primary'
                                     : 'pi-square text-500'
                             "
@@ -69,7 +69,7 @@
                         <span
                             class="text-sm leading-snug flex-grow"
                             [ngClass]="
-                                isPermissionSelected(option.value)
+                                isOptionsSelected(option.value)
                                     ? 'text-color font-bold'
                                     : 'text-color-secondary font-medium'
                             "

@@ -18,12 +18,18 @@ import { AuthService } from 'src/core/services/auth.service';
 import { AccountService } from 'src/shared/services/account.service';
 import { Account } from 'src/shared/types/account';
 import { Confirmable } from 'src/shared/decorators/confirmable.decorator';
-import { environment } from 'src/environments/environment.development';
+import { ImageViewPipe } from 'src/shared/pipes/image-view.pipe';
 
 @Component({
     selector: '[app-menu-profile]',
     standalone: true,
-    imports: [CommonModule, TooltipModule, ButtonModule, RouterModule],
+    imports: [
+        CommonModule,
+        TooltipModule,
+        ButtonModule,
+        RouterModule,
+        ImageViewPipe
+    ],
     template: `<button
             (click)="toggleMenu()"
             pTooltip="Profile"
@@ -31,7 +37,7 @@ import { environment } from 'src/environments/environment.development';
         >
             @if (account?.avatarUrl) {
                 <img
-                    [src]="getUrl(account?.avatarUrl)"
+                    [src]="account?.avatarUrl! | appImageWiev"
                     alt="avatar"
                     class="w-8 h-8 rounded-full"
                 />
@@ -104,10 +110,6 @@ export class AppMenuProfile implements OnDestroy {
     layoutService = inject(LayoutService);
     authService = inject(AuthService);
     accountService = inject(AccountService);
-
-    getUrl(url: string | undefined) : string {
-        return environment.API_BASE_URL + url;
-    }
 
     renderer = inject(Renderer2);
 
